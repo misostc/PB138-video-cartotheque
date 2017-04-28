@@ -1,5 +1,5 @@
 ## Tododododo
 
  - Navrhnut strukturu dokumentu (XSD)
- - Nejake zakladne JavaAPI
+ - Nejake zakladne rozhranie
  - Front-end, menu a procesy
