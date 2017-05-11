@@ -1,7 +1,19 @@
 package cz.muni.fi.pb138.exceptions;
 
-/**
- * Created by micha on 11.05.2017.
- */
 public class ColumnsDontMatchCategoryException extends RuntimeException {
+    public ColumnsDontMatchCategoryException() {
+    }
+
+    public ColumnsDontMatchCategoryException(String message) {
+        super(message);
+    }
+
+    public ColumnsDontMatchCategoryException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public ColumnsDontMatchCategoryException(Throwable cause) {
+        super(cause);
+    }
+
 }

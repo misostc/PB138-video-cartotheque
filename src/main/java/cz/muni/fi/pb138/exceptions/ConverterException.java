@@ -1,7 +1,19 @@
 package cz.muni.fi.pb138.exceptions;
 
-/**
- * Created by micha on 11.05.2017.
- */
 public class ConverterException extends RuntimeException {
+    public ConverterException() {
+    }
+
+    public ConverterException(String message) {
+        super(message);
+    }
+
+    public ConverterException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public ConverterException(Throwable cause) {
+        super(cause);
+    }
+
 }

@@ -16,26 +16,27 @@ public interface CategoryManager {
      * The id for category is created automatically.
      *
      * @param c category object to add
-     * @throws IllegalArgumentException when a field is missing, or the id field is filled in
+     * @throws IllegalArgumentException      when a field is missing, or the id field is filled in
      * @throws CategoryNotPersistedException when there was a problem with persisting a category
      */
     void addCategory(CategoryDTO c);
 
     /**
      * Removes a category.
-     *
+     * <p>
      * Searches for categories according to the id field and removes it.
      * This method also removes all media associated with this category.
      *
      * @param c category object with id field filled in
-     * @throws IllegalArgumentException when id field is missing
-     * @throws CategoryNotFoundException when there is no category with this id
+     * @throws IllegalArgumentException    when id field is missing
+     * @throws CategoryNotFoundException   when there is no category with this id
      * @throws CategoryNotRemovedException when there was a problem with removing a category
      */
     void removeCategory(CategoryDTO c);
 
     /**
      * Returns categories with only id and name filled in
+     *
      * @return Collection of available categories with only id and name fields
      * @throws CategoriesNotAvailableException when there was a problem retrieving categories
      */
@@ -43,11 +44,11 @@ public interface CategoryManager {
 
     /**
      * For category id return its full detail, including column definitions
+     *
      * @param c category to search
      * @return category object with full details
-     *
-     * @throws IllegalArgumentException when id field is missing in category
-     * @throws CategoryNotFoundException when there is no category with this id
+     * @throws IllegalArgumentException        when id field is missing in category
+     * @throws CategoryNotFoundException       when there is no category with this id
      * @throws CategoriesNotAvailableException when there was a problem retrieving details
      */
     CategoryDTO getCategoryWithFullDetails(CategoryDTO c);

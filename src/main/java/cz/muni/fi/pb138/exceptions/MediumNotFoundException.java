@@ -1,7 +1,19 @@
 package cz.muni.fi.pb138.exceptions;
 
-/**
- * Created by micha on 11.05.2017.
- */
-public class MediumNotFoundException extends RuntimeException{
+public class MediumNotFoundException extends RuntimeException {
+    public MediumNotFoundException() {
+    }
+
+    public MediumNotFoundException(String message) {
+        super(message);
+    }
+
+    public MediumNotFoundException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public MediumNotFoundException(Throwable cause) {
+        super(cause);
+    }
+
 }

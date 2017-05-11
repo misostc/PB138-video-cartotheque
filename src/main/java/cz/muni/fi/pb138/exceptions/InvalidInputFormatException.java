@@ -1,7 +1,19 @@
 package cz.muni.fi.pb138.exceptions;
 
-/**
- * Created by micha on 11.05.2017.
- */
 public class InvalidInputFormatException extends RuntimeException {
+    public InvalidInputFormatException() {
+    }
+
+    public InvalidInputFormatException(String message) {
+        super(message);
+    }
+
+    public InvalidInputFormatException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public InvalidInputFormatException(Throwable cause) {
+        super(cause);
+    }
+
 }

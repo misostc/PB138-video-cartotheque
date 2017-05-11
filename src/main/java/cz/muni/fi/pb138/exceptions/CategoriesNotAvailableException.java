@@ -1,8 +1,5 @@
 package cz.muni.fi.pb138.exceptions;
 
-/**
- * Created by micha on 11.05.2017.
- */
 public class CategoriesNotAvailableException extends RuntimeException {
     public CategoriesNotAvailableException() {
     }
@@ -19,7 +16,4 @@ public class CategoriesNotAvailableException extends RuntimeException {
         super(cause);
     }
 
-    public CategoriesNotAvailableException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
-    }
 }

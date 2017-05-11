@@ -1,7 +1,19 @@
 package cz.muni.fi.pb138.exceptions;
 
-/**
- * Created by micha on 11.05.2017.
- */
-public class MediaNotAvailableException {
+public class MediaNotAvailableException extends RuntimeException {
+    public MediaNotAvailableException() {
+    }
+
+    public MediaNotAvailableException(String message) {
+        super(message);
+    }
+
+    public MediaNotAvailableException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public MediaNotAvailableException(Throwable cause) {
+        super(cause);
+    }
+
 }
