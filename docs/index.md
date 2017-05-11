@@ -1,4 +1,4 @@
----
+﻿---
 ---
 
 # Welcome to our project!
@@ -42,3 +42,5 @@ This is a sample xml file of how we will store the movie database:
 ![Creating New Category UI](images/create-category-window.png)
 
 ![Moving Medium UI](images/move-media-window.png)
+
+![Creating New Medium UI](images/create-medium-window.png)
