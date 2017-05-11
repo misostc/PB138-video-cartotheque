@@ -42,7 +42,7 @@ For category id return its full detail, including column definitions
    * `CategoryNotFoundException` — when there is no category with this id
    * `CategoriesNotAvailableException` — when there was a problem retrieving details
 
-#MediumManager
+# MediumManager
 
 ## `void addMedium(MediumDTO m)`
 
