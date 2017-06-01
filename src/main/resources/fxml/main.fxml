@@ -40,7 +40,7 @@
         </MenuBar>
     </top>
     <center>
-        <SplitPane dividerPositions="0.3" BorderPane.alignment="CENTER">
+        <SplitPane fx:id="mainPane" dividerPositions="0.3" BorderPane.alignment="CENTER">
             <items>
                 <VBox>
                     <children>

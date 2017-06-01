@@ -1,6 +1,7 @@
 package cz.muni.fi.pb138.backend;
 
 import cz.muni.fi.pb138.exceptions.DocumentNotAvailableException;
+import cz.muni.fi.pb138.exceptions.DocumentNotSavedException;
 import org.w3c.dom.Document;
 
 public interface DocumentProvider {
@@ -14,4 +15,10 @@ public interface DocumentProvider {
      */
     Document getDocument();
 
+    /**
+     * Saves changes to DOM to underlying file.
+     *
+     * @throws DocumentNotSavedException when there was a problem saving Document (i.e. IO error)
+     */
+    void save();
 }
