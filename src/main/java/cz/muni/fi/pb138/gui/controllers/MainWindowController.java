@@ -1,10 +1,10 @@
 package cz.muni.fi.pb138.gui.controllers;
 
-import cz.muni.fi.pb138.backend.CategoryManager;
-import cz.muni.fi.pb138.backend.MediumManager;
+import cz.muni.fi.pb138.backend.*;
 import cz.muni.fi.pb138.entity.CategoryDTO;
 import cz.muni.fi.pb138.entity.ColumnDTO;
 import cz.muni.fi.pb138.entity.MediumDTO;
+import cz.muni.fi.pb138.gui.dialogs.MediumSearchResultsPane;
 import cz.muni.fi.pb138.gui.view.CategoryListCellFactory;
 import cz.muni.fi.pb138.gui.view.MediumTableCellValueFactory;
 import cz.muni.fi.pb138.gui.viewmodel.MediumViewModel;
@@ -13,7 +13,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
+import java.io.*;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,10 +26,14 @@ import java.util.stream.Collectors;
  */
 public class MainWindowController {
 
+    private static DocumentProvider documentProvider;
     private static MediumManager mediumManager;
     private static CategoryManager categoryManager;
+
     @FXML
     SplitPane mainPane;
+    @FXML
+    MenuItem openMenuItem;
     @FXML
     MenuItem saveMenuItem;
     @FXML
@@ -35,6 +42,10 @@ public class MainWindowController {
     TextField searchTextField;
     @FXML
     TableView<MediumViewModel> mediumsTable;
+
+    public static void setDocumentProvider(DocumentProvider documentProvider) {
+        MainWindowController.documentProvider = documentProvider;
+    }
 
     public static void setMediumManager(MediumManager mediumManager) {
         MainWindowController.mediumManager = mediumManager;
@@ -84,16 +95,23 @@ public class MainWindowController {
 
 
     public void openMenuItemAction() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Open Menu Item Performed");
-        alert.showAndWait();
+        FileChooser fileChooser = new FileChooser();
+
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("ODS file", "*.ods"));
+        fileChooser.setTitle("Open ODS file");
+        File result = fileChooser.showOpenDialog(new Stage());
+        if (result != null) {
+            setDocumentProvider(new ODSDocumentProvider(result.getAbsolutePath()));
+            setMediumManager(new MediumManagerImpl(documentProvider));
+            setCategoryManager(new CategoryManagerImpl(documentProvider));
+            dataUpdated();
+        }
     }
 
     public void saveMenuItemAction() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Save Menu Item Performed");
-        alert.showAndWait();
-
+        if (documentProvider != null) {
+            documentProvider.save();
+        }
     }
 
     public void closeMenuItemAction() {
@@ -101,8 +119,22 @@ public class MainWindowController {
     }
 
     public void aboutMenuItemAction() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("About Menu Item Performed");
+        final Alert alert = new Alert(Alert.AlertType.INFORMATION);
+
+        alert.setTitle("About Video Carthotheque");
+        alert.setHeaderText("PB138 Video Carthotheque");
+        TextArea textArea = new TextArea();
+
+        String result;
+        InputStream aboutTextStream = getClass().getResourceAsStream("/text/about.txt");
+        try (BufferedReader buffer = new BufferedReader(new InputStreamReader(aboutTextStream))) {
+            result = buffer.lines().collect(Collectors.joining("\n"));
+        } catch (IOException e) {
+            result = "https://github.com/misostc/PB138-video-cartotheque";
+        }
+
+        textArea.setText(result);
+        alert.getDialogPane().setContent(textArea);
         alert.showAndWait();
     }
 
@@ -121,9 +153,19 @@ public class MainWindowController {
     }
 
     public void searchMediumButtonAction() {
+        String query = searchTextField.getText().trim();
+
+        if (query.isEmpty()) {
+            searchTextField.requestFocus();
+            return;
+        }
+
+        Collection<MediumDTO> mediums = mediumManager.findMediumByValue(query);
+        MediumSearchResultsPane searchResultsPane = new MediumSearchResultsPane(mediums);
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Search medium button clicked");
-        alert.setHeaderText("Searched text: " + searchTextField.getText());
+        alert.setTitle("Search results");
+        alert.setHeaderText(String.format("%d results found.", mediums.size()));
+        alert.getDialogPane().setContent(searchResultsPane);
         alert.showAndWait();
     }
 

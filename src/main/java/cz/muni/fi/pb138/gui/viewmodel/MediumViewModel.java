@@ -11,27 +11,26 @@ import java.util.stream.Collectors;
  */
 public class MediumViewModel {
 
-    public List<String> getValues() {
-        return values;
-    }
-
     private final List<String> values;
-
-    public MediumDTO getOriginal() {
-        return original;
-    }
-
     private final MediumDTO original;
 
     public MediumViewModel(MediumDTO original) {
         this.original = original;
         this.values = original.getCategory().getColumns().stream().map(c -> {
-          for (ColumnValueDTO valueDTO : original.getValues()) {
-              if (valueDTO.getColumn().getId().equals(c.getId())) {
-                  return valueDTO.getValue();
-              }
-          }
-          return "";
+            for (ColumnValueDTO valueDTO : original.getValues()) {
+                if (valueDTO.getColumn().getId().equals(c.getId())) {
+                    return valueDTO.getValue();
+                }
+            }
+            return "";
         }).collect(Collectors.toList());
+    }
+
+    public List<String> getValues() {
+        return values;
+    }
+
+    public MediumDTO getOriginal() {
+        return original;
     }
 }

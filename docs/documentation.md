@@ -1,6 +1,3 @@
----
----
-
 # CategoryManager
 
 ## `void addCategory(CategoryDTO c)`

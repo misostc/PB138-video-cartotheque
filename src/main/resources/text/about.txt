@@ -1,0 +1,9 @@
+Github: https://github.com/misostc/PB138-video-cartotheque
+
+Software for managment of home video cartothèque
+
+Authors:
+- Michal Bábel, učo 410434, GitHub: misostc
+- Roman Gluszny, učo 422473, GitHub: Alkanthor
+- Marcel Rebro, učo 433819, GitHub: mrebro
+- Dávid Veliký, učo 409965, GitHub: DavidVeliky

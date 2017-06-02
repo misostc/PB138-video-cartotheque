@@ -10,6 +10,7 @@ public class DocumentNotValidException implements DocumentProvider {
 
     /**
      * Creates document provider from ODS file
+     *
      * @param filename ods file to locate.
      * @throws DocumentNotValidException when document is not a proper file.
      */
