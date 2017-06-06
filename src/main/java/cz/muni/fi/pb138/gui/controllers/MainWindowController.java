@@ -4,6 +4,7 @@ import cz.muni.fi.pb138.backend.*;
 import cz.muni.fi.pb138.entity.CategoryDTO;
 import cz.muni.fi.pb138.entity.ColumnDTO;
 import cz.muni.fi.pb138.entity.MediumDTO;
+import cz.muni.fi.pb138.gui.dialogs.MediumDialog;
 import cz.muni.fi.pb138.gui.dialogs.MediumSearchResultsPane;
 import cz.muni.fi.pb138.gui.view.CategoryListCellFactory;
 import cz.muni.fi.pb138.gui.view.MediumTableCellValueFactory;
@@ -19,6 +20,7 @@ import javafx.stage.Stage;
 import java.io.*;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -111,11 +113,24 @@ public class MainWindowController {
     public void saveMenuItemAction() {
         if (documentProvider != null) {
             documentProvider.save();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Save");
+            alert.setHeaderText("Document saved.");
+            alert.showAndWait();
         }
     }
 
     public void closeMenuItemAction() {
-        Platform.exit();
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Confirm Exit");
+        alert.setHeaderText("Do you really want to close? You can lose unsaved changes");
+
+        alert.getButtonTypes().setAll(ButtonType.CLOSE, ButtonType.CANCEL);
+        alert.showAndWait();
+
+        if (alert.getResult() == ButtonType.CLOSE) {
+            Platform.exit();
+        }
     }
 
     public void aboutMenuItemAction() {
@@ -146,10 +161,9 @@ public class MainWindowController {
     }
 
     public void createMediumButtonAction() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Create medium button clicked");
-        alert.showAndWait();
-
+        MediumDialog dialog = new MediumDialog();
+        Optional<MediumDTO> mediumDTO = dialog.showAndWait();
+        System.out.println(mediumDTO);
     }
 
     public void searchMediumButtonAction() {
