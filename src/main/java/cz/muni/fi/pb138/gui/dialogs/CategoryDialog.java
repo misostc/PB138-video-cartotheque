@@ -41,6 +41,8 @@ public class CategoryDialog extends Dialog<CategoryDTO> {
 
         ButtonType loginButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
         dialogPane.getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
+        Button noButton = (Button) dialogPane.lookupButton(loginButtonType);
+        noButton.setDefaultButton(false);
 
 
         setResultConverter(dialogButton -> {
@@ -66,6 +68,10 @@ public class CategoryDialog extends Dialog<CategoryDTO> {
     public void deletePressed(KeyEvent event) {
         if (categoryListView.getSelectionModel().getSelectedItem() != null && event.getCode().equals(KeyCode.DELETE))
             categoryListView.getItems().remove(categoryListView.getSelectionModel().getSelectedItem());
+    }
+
+    public void editAction() {
+        System.out.println("editing");
     }
 
     public CategoryDTO createCategory() {

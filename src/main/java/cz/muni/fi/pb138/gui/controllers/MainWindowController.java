@@ -158,7 +158,9 @@ public class MainWindowController {
         CategoryDialog dialog = new CategoryDialog();
         Optional<CategoryDTO> categoryDTO = dialog.showAndWait();
         System.out.println(categoryDTO);
-
+        //maybe better to handle using exception?
+    if(!categoryDTO.toString().equals("Optional.empty"))
+        categoriesList.getItems().add(categoryDTO.get());
     }
 
     public void createMediumButtonAction() {
