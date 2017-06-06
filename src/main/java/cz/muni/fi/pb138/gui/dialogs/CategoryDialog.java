@@ -2,16 +2,18 @@ package cz.muni.fi.pb138.gui.dialogs;
 
 import cz.muni.fi.pb138.entity.CategoryDTO;
 import cz.muni.fi.pb138.entity.ColumnDTO;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by micha on 06.06.2017.
@@ -43,7 +45,6 @@ public class CategoryDialog extends Dialog<CategoryDTO> {
 
         setResultConverter(dialogButton -> {
             return createCategory();
-            //return null;
         });
 
 
@@ -62,11 +63,16 @@ public class CategoryDialog extends Dialog<CategoryDTO> {
             categoryListView.getItems().add(newColumnField.getText());
     }
 
+    public void deletePressed(KeyEvent event) {
+        if (categoryListView.getSelectionModel().getSelectedItem() != null && event.getCode().equals(KeyCode.DELETE))
+            categoryListView.getItems().remove(categoryListView.getSelectionModel().getSelectedItem());
+    }
+
     public CategoryDTO createCategory() {
 
         CategoryDTO newCategory = new CategoryDTO();
         //todo generate unique ID
-        newCategory.setId("01");
+        newCategory.setId(UUID.randomUUID().toString());
         newCategory.setName(categoryNameField.getText());
 
         List<ColumnDTO> columnList = new ArrayList<>();
@@ -78,7 +84,12 @@ public class CategoryDialog extends Dialog<CategoryDTO> {
             columnList.add(tmp);
         }
         newCategory.setColumns(columnList);
-        return newCategory;
+        System.out.println("Creating category " + newCategory.toString());
+
+        if (newCategory.isValid())
+            return newCategory;
+        else
+            return null;
 
     }
 }
