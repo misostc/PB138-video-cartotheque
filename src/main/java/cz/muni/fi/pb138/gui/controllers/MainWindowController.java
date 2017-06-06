@@ -4,6 +4,7 @@ import cz.muni.fi.pb138.backend.*;
 import cz.muni.fi.pb138.entity.CategoryDTO;
 import cz.muni.fi.pb138.entity.ColumnDTO;
 import cz.muni.fi.pb138.entity.MediumDTO;
+import cz.muni.fi.pb138.gui.dialogs.CategoryDialog;
 import cz.muni.fi.pb138.gui.dialogs.MediumDialog;
 import cz.muni.fi.pb138.gui.dialogs.MediumSearchResultsPane;
 import cz.muni.fi.pb138.gui.view.CategoryListCellFactory;
@@ -154,9 +155,9 @@ public class MainWindowController {
     }
 
     public void createCategoryButtonAction() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Create category button clicked");
-        alert.showAndWait();
+        CategoryDialog dialog = new CategoryDialog();
+        Optional<CategoryDTO> categoryDTO = dialog.showAndWait();
+        System.out.println(categoryDTO);
 
     }
 
