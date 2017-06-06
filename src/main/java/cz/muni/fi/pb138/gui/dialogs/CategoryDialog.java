@@ -1,20 +1,29 @@
 package cz.muni.fi.pb138.gui.dialogs;
 
 import cz.muni.fi.pb138.entity.CategoryDTO;
+import cz.muni.fi.pb138.entity.ColumnDTO;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.DialogPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by micha on 06.06.2017.
  */
 public class CategoryDialog extends Dialog<CategoryDTO> {
+    @FXML
+    public ListView categoryListView;
+    @FXML
+    public TextField newColumnField;
+    @FXML
+    public TextField categoryNameField;
+
     public CategoryDialog() {
         super();
 
@@ -31,13 +40,14 @@ public class CategoryDialog extends Dialog<CategoryDTO> {
         ButtonType loginButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
         dialogPane.getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
 
+
         setResultConverter(dialogButton -> {
-            // called in case of OK button and valid form or in case of cancel returning null
-            return null;
+            return createCategory();
+            //return null;
         });
 
 
-        setTitle("todo change");
+        setTitle("Create Category");
         initStyle(StageStyle.UTILITY);
 
         try {
@@ -48,6 +58,27 @@ public class CategoryDialog extends Dialog<CategoryDTO> {
     }
 
     public void addColumnButtonAction() {
+        if (newColumnField.getText().trim().length() > 0)
+            categoryListView.getItems().add(newColumnField.getText());
+    }
+
+    public CategoryDTO createCategory() {
+
+        CategoryDTO newCategory = new CategoryDTO();
+        //todo generate unique ID
+        newCategory.setId("01");
+        newCategory.setName(categoryNameField.getText());
+
+        List<ColumnDTO> columnList = new ArrayList<>();
+        List<String> valuesList = categoryListView.getItems();
+        for (String item : valuesList) {
+            ColumnDTO tmp = new ColumnDTO();
+            tmp.setId(Integer.toString(columnList.size() + 1));
+            tmp.setName(item);
+            columnList.add(tmp);
+        }
+        newCategory.setColumns(columnList);
+        return newCategory;
 
     }
 }
