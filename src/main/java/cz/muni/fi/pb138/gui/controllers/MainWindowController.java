@@ -141,6 +141,7 @@ public class MainWindowController {
 
         MediumDTO original = selectedItem.getOriginal();
         MediumDialog dialog = new MediumDialog(categoryManager, original);
+        dialog.setTitle("Edit Medium");
         Optional<MediumDTO> mediumOptional = dialog.showAndWait();
 
         if (mediumOptional.isPresent()) {
@@ -231,6 +232,7 @@ public class MainWindowController {
 
     public void createMediumButtonAction() {
         MediumDialog dialog = new MediumDialog(categoryManager, new MediumDTO());
+        dialog.setTitle("Create new Medium");
         Optional<MediumDTO> mediumOptional = dialog.showAndWait();
 
         if (mediumOptional.isPresent()) {
@@ -253,7 +255,11 @@ public class MainWindowController {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Search results");
         alert.setHeaderText(String.format("%d results found.", mediums.size()));
-        alert.getDialogPane().setContent(searchResultsPane);
+        alert.getDialogPane().setContent(searchResultsPane.getNode());
+        alert.getDialogPane().setMinWidth(500.0);
+        alert.getDialogPane().setMinHeight(150.0);
+        alert.setWidth(500.0);
+        alert.setHeight(150.0);
         alert.showAndWait();
     }
 

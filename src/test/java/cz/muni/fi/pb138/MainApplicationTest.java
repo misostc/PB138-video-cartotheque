@@ -30,6 +30,8 @@ public class MainApplicationTest extends MainApplication {
         when(categoryManager.getCategories()).thenReturn(list);
         Collection<MediumDTO> mediums = Arrays.asList(Mocks.getMedium(), Mocks.getMedium());
         when(mediumManager.findMediumByCategory(any())).thenReturn(mediums);
+        List<MediumDTO> searchResults = Arrays.asList(Mocks.getMedium(), Mocks.getMedium(), Mocks.getMedium(), Mocks.getMedium());
+        when(mediumManager.findMediumByValue(any())).thenReturn(searchResults);
 
         MainWindowController.setCategoryManager(categoryManager);
         MainWindowController.setMediumManager(mediumManager);
