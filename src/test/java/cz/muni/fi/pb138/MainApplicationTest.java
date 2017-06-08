@@ -27,7 +27,7 @@ public class MainApplicationTest extends MainApplication {
         categoryManager = mock(CategoryManager.class);
         mediumManager = mock(MediumManager.class);
         List<CategoryDTO> list = Arrays.asList(Mocks.getCategory(), Mocks.getCategory());
-        when(categoryManager.getCategoriesWithBasicDetails()).thenReturn(list);
+        when(categoryManager.getCategories()).thenReturn(list);
         Collection<MediumDTO> mediums = Arrays.asList(Mocks.getMedium(), Mocks.getMedium());
         when(mediumManager.findMediumByCategory(any())).thenReturn(mediums);
 

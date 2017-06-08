@@ -40,16 +40,5 @@ public interface CategoryManager {
      * @return Collection of available categories with only id and name fields
      * @throws CategoriesNotAvailableException when there was a problem retrieving categories
      */
-    Collection<CategoryDTO> getCategoriesWithBasicDetails();
-
-    /**
-     * For category id return its full detail, including column definitions
-     *
-     * @param c category to search
-     * @return category object with full details
-     * @throws IllegalArgumentException        when id field is missing in category
-     * @throws CategoryNotFoundException       when there is no category with this id
-     * @throws CategoriesNotAvailableException when there was a problem retrieving details
-     */
-    CategoryDTO getCategoryWithFullDetails(CategoryDTO c);
+    Collection<CategoryDTO> getCategories();
 }

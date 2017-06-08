@@ -26,12 +26,8 @@ public class CategoryManagerImpl implements CategoryManager {
     }
 
     @Override
-    public Collection<CategoryDTO> getCategoriesWithBasicDetails() {
+    public Collection<CategoryDTO> getCategories() {
         return null;
     }
 
-    @Override
-    public CategoryDTO getCategoryWithFullDetails(CategoryDTO c) {
-        return null;
-    }
 }

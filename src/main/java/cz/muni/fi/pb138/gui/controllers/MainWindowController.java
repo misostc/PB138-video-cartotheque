@@ -13,6 +13,7 @@ import cz.muni.fi.pb138.gui.viewmodel.MediumViewModel;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
@@ -73,7 +74,7 @@ public class MainWindowController {
     }
 
     private void updateCategoriesList() {
-        ObservableList<CategoryDTO> categoryDTOS = FXCollections.observableArrayList(categoryManager.getCategoriesWithBasicDetails());
+        ObservableList<CategoryDTO> categoryDTOS = FXCollections.observableArrayList(categoryManager.getCategories());
         categoriesList.setCellFactory(new CategoryListCellFactory());
         categoriesList.setItems(categoryDTOS);
         categoriesList.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
@@ -82,6 +83,11 @@ public class MainWindowController {
     }
 
     private void updateMediumList(CategoryDTO newValue) {
+        if (newValue == null) {
+            mediumsTable.getItems().clear();
+            return;
+        }
+
         Collection<MediumDTO> mediumDTOS = mediumManager.findMediumByCategory(newValue);
         List<MediumViewModel> mediumViewModels = mediumDTOS.stream().map(MediumViewModel::new).collect(Collectors.toList());
         mediumsTable.getItems().clear();
@@ -94,12 +100,70 @@ public class MainWindowController {
             tableColumn.setCellValueFactory(new MediumTableCellValueFactory(index++));
             mediumsTable.getColumns().add(tableColumn);
         }
+
+        ContextMenu cm = createTableContextMenu();
+        mediumsTable.setContextMenu(cm);
+    }
+
+    private ContextMenu createTableContextMenu() {
+        ContextMenu result = new ContextMenu();
+        MenuItem editMenuItem = new MenuItem("Edit");
+        editMenuItem.setOnAction(this::editMediumMenuAction);
+        MenuItem deleteMenuItem = new MenuItem("Delete");
+        deleteMenuItem.setOnAction(this::deleteMediumMenuAction);
+
+        result.getItems().addAll(editMenuItem, deleteMenuItem);
+        return result;
+    }
+
+    private void deleteMediumMenuAction(ActionEvent actionEvent) {
+        MediumViewModel selectedItem = mediumsTable.getSelectionModel().getSelectedItem();
+        if (selectedItem == null) {
+            return;
+        }
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirm Delete");
+        alert.setHeaderText("Do you wish to delete the medium item?");
+        Optional<ButtonType> chosenButton = alert.showAndWait();
+
+        if (chosenButton.isPresent() && chosenButton.get().equals(ButtonType.OK)) {
+            MediumDTO medium = selectedItem.getOriginal();
+            mediumManager.removeMedium(medium);
+            dataUpdated();
+        }
+    }
+
+    private void editMediumMenuAction(ActionEvent event) {
+        MediumViewModel selectedItem = mediumsTable.getSelectionModel().getSelectedItem();
+        if (selectedItem == null) {
+            return;
+        }
+
+        MediumDTO original = selectedItem.getOriginal();
+        MediumDialog dialog = new MediumDialog(categoryManager, original);
+        Optional<MediumDTO> mediumOptional = dialog.showAndWait();
+
+        if (mediumOptional.isPresent()) {
+            MediumDTO newMedium = mediumOptional.get();
+            mediumManager.editMedium(newMedium);
+            dataUpdated();
+        }
     }
 
 
     public void openMenuItemAction() {
-        FileChooser fileChooser = new FileChooser();
+        if (documentProvider != null) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirm Open");
+            alert.setHeaderText("Opening a new file will discard changes you havent saved. Do you wish to proceed?");
+            Optional<ButtonType> chosenButton = alert.showAndWait();
 
+            if (chosenButton.isPresent() && !chosenButton.get().equals(ButtonType.OK)) {
+                return;
+            }
+        }
+
+        FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("ODS file", "*.ods"));
         fileChooser.setTitle("Open ODS file");
         File result = fileChooser.showOpenDialog(new Stage());
@@ -156,17 +220,24 @@ public class MainWindowController {
 
     public void createCategoryButtonAction() {
         CategoryDialog dialog = new CategoryDialog();
-        Optional<CategoryDTO> categoryDTO = dialog.showAndWait();
-        System.out.println(categoryDTO);
-        //maybe better to handle using exception?
-    if(!categoryDTO.toString().equals("Optional.empty"))
-        categoriesList.getItems().add(categoryDTO.get());
+        Optional<CategoryDTO> categoryOptional = dialog.showAndWait();
+
+        if (categoryOptional.isPresent()) {
+            CategoryDTO newCategory = categoryOptional.get();
+            categoryManager.addCategory(newCategory);
+            dataUpdated();
+        }
     }
 
     public void createMediumButtonAction() {
-        MediumDialog dialog = new MediumDialog();
-        Optional<MediumDTO> mediumDTO = dialog.showAndWait();
-        System.out.println(mediumDTO);
+        MediumDialog dialog = new MediumDialog(categoryManager, new MediumDTO());
+        Optional<MediumDTO> mediumOptional = dialog.showAndWait();
+
+        if (mediumOptional.isPresent()) {
+            MediumDTO newMedium = mediumOptional.get();
+            mediumManager.addMedium(newMedium);
+            dataUpdated();
+        }
     }
 
     public void searchMediumButtonAction() {
