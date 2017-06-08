@@ -31,17 +31,15 @@ public class CategoryDTO {
         this.columns = columns;
     }
 
-    public String toString()
-    {
-        String output=id+" "+name+" columns:";
+    public String toString() {
+        String output = id + " " + name + " columns:";
         for (ColumnDTO item : columns) {
-            output=output+" "+item.getName();
+            output = output + " " + item.getName();
         }
         return output;
     }
 
-    public boolean isValid()
-    {
-        return name.trim().length() > 0 && columns.size()>0;
+    public boolean isValid() {
+        return name.trim().length() > 0 && columns.size() > 0;
     }
 }

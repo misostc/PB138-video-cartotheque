@@ -1,10 +1,8 @@
 package cz.muni.fi.pb138.gui.viewmodel;
 
-import cz.muni.fi.pb138.entity.ColumnValueDTO;
 import cz.muni.fi.pb138.entity.MediumDTO;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by Michal.Babel on 01-Jun-17.
@@ -16,14 +14,7 @@ public class MediumViewModel {
 
     public MediumViewModel(MediumDTO original) {
         this.original = original;
-        this.values = original.getCategory().getColumns().stream().map(c -> {
-            for (ColumnValueDTO valueDTO : original.getValues()) {
-                if (valueDTO.getColumn().getId().equals(c.getId())) {
-                    return valueDTO.getValue();
-                }
-            }
-            return "";
-        }).collect(Collectors.toList());
+        this.values = original.getValues();
     }
 
     public List<String> getValues() {

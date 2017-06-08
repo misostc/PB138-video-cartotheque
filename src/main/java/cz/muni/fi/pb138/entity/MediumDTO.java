@@ -1,10 +1,22 @@
 package cz.muni.fi.pb138.entity;
 
-import java.util.Collection;
+import org.w3c.dom.Node;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MediumDTO {
     CategoryDTO category;
-    Collection<ColumnValueDTO> values;
+    List<String> values = new ArrayList<>();
+    Node xmlNode;
+
+    public Node getXmlNode() {
+        return xmlNode;
+    }
+
+    public void setXmlNode(Node xmlNode) {
+        this.xmlNode = xmlNode;
+    }
 
     public CategoryDTO getCategory() {
         return category;
@@ -14,11 +26,11 @@ public class MediumDTO {
         this.category = category;
     }
 
-    public Collection<ColumnValueDTO> getValues() {
+    public List<String> getValues() {
         return values;
     }
 
-    public void setValues(Collection<ColumnValueDTO> values) {
+    public void setValues(List<String> values) {
         this.values = values;
     }
 }

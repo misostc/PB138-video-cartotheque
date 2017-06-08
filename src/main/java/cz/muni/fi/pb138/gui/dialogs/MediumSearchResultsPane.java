@@ -1,15 +1,12 @@
 package cz.muni.fi.pb138.gui.dialogs;
 
 import cz.muni.fi.pb138.entity.ColumnDTO;
-import cz.muni.fi.pb138.entity.ColumnValueDTO;
 import cz.muni.fi.pb138.entity.MediumDTO;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.Node;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -62,7 +59,7 @@ public class MediumSearchResultsPane {
 
         public MediumSearchResult(MediumDTO mediumDTO) {
             this.categoryName = mediumDTO.getCategory().getName();
-            this.values = mediumDTO.getValues().stream().map(ColumnValueDTO::getValue).collect(Collectors.toList());
+            this.values = mediumDTO.getValues();
             this.columnNames = mediumDTO.getCategory().getColumns().stream().map(ColumnDTO::getName).collect(Collectors.toList());
         }
 
@@ -80,9 +77,8 @@ public class MediumSearchResultsPane {
             } else {
                 index--;
                 if (index < getValues().size()) {
-                    return String.format("%s [%s]",values.get(index), columnNames.get(index));
-                }
-                else {
+                    return String.format("%s [%s]", values.get(index), columnNames.get(index));
+                } else {
                     return "";
                 }
             }

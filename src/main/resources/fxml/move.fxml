@@ -1,84 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-
-
-<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="600.0" type="BorderPane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
-   <center>
-      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
-         <children>
-            <Label fx:id="movingLabel" text="Moving from XXX to XXX">
-               <font>
-                  <Font size="20.0" />
-               </font>
-               <padding>
-                  <Insets left="20.0" top="20.0" />
-               </padding>
-            </Label>
-            <Label text="Accept changes?">
-               <font>
-                  <Font size="18.0" />
-               </font>
-               <VBox.margin>
-                  <Insets left="20.0" top="10.0" />
-               </VBox.margin>
-            </Label>
-            <HBox prefHeight="50.0" prefWidth="600.0">
-               <children>
-                  <Label prefWidth="50.0" text="Before">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets left="20.0" />
-                     </HBox.margin>
-                  </Label>
-                  <TableView fx:id="beforeTable" focusTraversable="false" mouseTransparent="true" prefHeight="200.0" prefWidth="200.0">
-                    <columns>
-                      <TableColumn prefWidth="75.0" text="C1" />
-                      <TableColumn prefWidth="75.0" text="C2" />
-                    </columns>
-                     <HBox.margin>
-                        <Insets left="50.0" right="75.0" />
-                     </HBox.margin>
-                  </TableView>
-               </children>
-               <VBox.margin>
-                  <Insets top="30.0" />
-               </VBox.margin>
-            </HBox>
-            <HBox prefHeight="50.0" prefWidth="600.0">
-               <children>
-                  <Label prefWidth="50.0" text="After">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets left="20.0" />
-                     </HBox.margin>
-                  </Label>
-                  <TableView fx:id="afterTable" focusTraversable="false" mouseTransparent="true" prefHeight="200.0" prefWidth="200.0">
-                     <columns>
-                        <TableColumn prefWidth="75.0" text="C1" />
-                        <TableColumn prefWidth="75.0" text="C2" />
-                     </columns>
-                     <HBox.margin>
-                        <Insets left="50.0" right="75.0" />
-                     </HBox.margin>
-                  </TableView>
-               </children>
-               <VBox.margin>
-                  <Insets top="30.0" />
-               </VBox.margin>
-            </HBox>
-         </children>
-      </VBox>
-   </center>
+<fx:root xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+         prefHeight="350.0" prefWidth="600.0" type="BorderPane"
+         xmlns="http://javafx.com/javafx/8.0.111">
+    <center>
+        <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+            <children>
+                <Label fx:id="movingLabel" text="Moving from XXX to XXX">
+                    <font>
+                        <Font size="20.0"/>
+                    </font>
+                    <padding>
+                        <Insets left="20.0" top="20.0"/>
+                    </padding>
+                </Label>
+                <Label text="Accept changes?">
+                    <font>
+                        <Font size="18.0"/>
+                    </font>
+                    <VBox.margin>
+                        <Insets left="20.0" top="10.0"/>
+                    </VBox.margin>
+                </Label>
+                <HBox prefHeight="50.0" prefWidth="600.0">
+                    <children>
+                        <Label prefWidth="50.0" text="Before">
+                            <font>
+                                <Font size="15.0"/>
+                            </font>
+                            <HBox.margin>
+                                <Insets left="20.0"/>
+                            </HBox.margin>
+                        </Label>
+                        <TableView fx:id="beforeTable" focusTraversable="false" mouseTransparent="true"
+                                   prefHeight="200.0" prefWidth="200.0">
+                            <columns>
+                                <TableColumn prefWidth="75.0" text="C1"/>
+                                <TableColumn prefWidth="75.0" text="C2"/>
+                            </columns>
+                            <HBox.margin>
+                                <Insets left="50.0" right="75.0"/>
+                            </HBox.margin>
+                        </TableView>
+                    </children>
+                    <VBox.margin>
+                        <Insets top="30.0"/>
+                    </VBox.margin>
+                </HBox>
+                <HBox prefHeight="50.0" prefWidth="600.0">
+                    <children>
+                        <Label prefWidth="50.0" text="After">
+                            <font>
+                                <Font size="15.0"/>
+                            </font>
+                            <HBox.margin>
+                                <Insets left="20.0"/>
+                            </HBox.margin>
+                        </Label>
+                        <TableView fx:id="afterTable" focusTraversable="false" mouseTransparent="true"
+                                   prefHeight="200.0" prefWidth="200.0">
+                            <columns>
+                                <TableColumn prefWidth="75.0" text="C1"/>
+                                <TableColumn prefWidth="75.0" text="C2"/>
+                            </columns>
+                            <HBox.margin>
+                                <Insets left="50.0" right="75.0"/>
+                            </HBox.margin>
+                        </TableView>
+                    </children>
+                    <VBox.margin>
+                        <Insets top="30.0"/>
+                    </VBox.margin>
+                </HBox>
+            </children>
+        </VBox>
+    </center>
 </fx:root>

@@ -1,62 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.Cursor?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-
-<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="450.0" type="BorderPane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
-   <center>
-      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
-         <children>
-            <HBox prefHeight="50.0" prefWidth="430.0">
-               <children>
-                  <Label text="Category name">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-                  <TextField fx:id="categoryNameField" promptText="Category name" HBox.hgrow="ALWAYS">
-                     <HBox.margin>
-                        <Insets left="10.0" />
-                     </HBox.margin>
-                  </TextField>
-               </children>
-            </HBox>
-            <TextField accessibleRole="TEXT" alignment="CENTER" editable="false" mouseTransparent="true" text="Columns" VBox.vgrow="ALWAYS">
-               <font>
-                  <Font size="15.0" />
-               </font>
-               <cursor>
-                  <Cursor fx:constant="DEFAULT" />
-               </cursor>
-            </TextField>
-            <ListView fx:id="categoryListView" editable="true" onKeyPressed="#deletePressed" prefHeight="220.0" prefWidth="430.0" />
-            <HBox prefHeight="60.0" prefWidth="430.0">
-               <children>
-                  <TextField fx:id="newColumnField" promptText="New column name" HBox.hgrow="ALWAYS" />
-                  <Button fx:id="addColumnButton" mnemonicParsing="false" onAction="#addColumnButtonAction" text="+" />
-               </children>
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-               <padding>
-                  <Insets top="5.0" />
-               </padding>
-            </HBox>
-         </children>
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-         <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="20.0" />
-         </padding>
-      </VBox>
-   </center>
+<fx:root xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+         prefHeight="400.0" prefWidth="450.0" type="BorderPane"
+         xmlns="http://javafx.com/javafx/8.0.111">
+    <center>
+        <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+            <children>
+                <HBox prefHeight="50.0" prefWidth="430.0">
+                    <children>
+                        <Label text="Category name">
+                            <font>
+                                <Font size="18.0"/>
+                            </font>
+                        </Label>
+                        <TextField fx:id="categoryNameField" promptText="Category name" HBox.hgrow="ALWAYS">
+                            <HBox.margin>
+                                <Insets left="10.0"/>
+                            </HBox.margin>
+                        </TextField>
+                    </children>
+                </HBox>
+                <TextField accessibleRole="TEXT" alignment="CENTER" editable="false" mouseTransparent="true"
+                           text="Columns" VBox.vgrow="ALWAYS">
+                    <font>
+                        <Font size="15.0"/>
+                    </font>
+                    <cursor>
+                        <Cursor fx:constant="DEFAULT"/>
+                    </cursor>
+                </TextField>
+                <ListView fx:id="categoryListView" editable="true" onKeyPressed="#deletePressed" prefHeight="220.0"
+                          prefWidth="430.0"/>
+                <HBox prefHeight="60.0" prefWidth="430.0">
+                    <children>
+                        <TextField fx:id="newColumnField" promptText="New column name" HBox.hgrow="ALWAYS"/>
+                        <Button fx:id="addColumnButton" mnemonicParsing="false" onAction="#addColumnButtonAction"
+                                text="+"/>
+                    </children>
+                    <opaqueInsets>
+                        <Insets/>
+                    </opaqueInsets>
+                    <padding>
+                        <Insets top="5.0"/>
+                    </padding>
+                </HBox>
+            </children>
+            <opaqueInsets>
+                <Insets/>
+            </opaqueInsets>
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="20.0"/>
+            </padding>
+        </VBox>
+    </center>
 </fx:root>

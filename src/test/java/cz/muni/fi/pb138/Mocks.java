@@ -2,7 +2,6 @@ package cz.muni.fi.pb138;
 
 import cz.muni.fi.pb138.entity.CategoryDTO;
 import cz.muni.fi.pb138.entity.ColumnDTO;
-import cz.muni.fi.pb138.entity.ColumnValueDTO;
 import cz.muni.fi.pb138.entity.MediumDTO;
 
 import java.util.Arrays;
@@ -23,13 +22,6 @@ public class Mocks {
         return result;
     }
 
-    public static ColumnValueDTO getColumnValue() {
-        ColumnValueDTO result = mock(ColumnValueDTO.class);
-        ColumnDTO column = getColumn();
-        when(result.getColumn()).thenReturn(column);
-        when(result.getValue()).thenReturn("Column value" + result.hashCode());
-        return result;
-    }
 
     public static CategoryDTO getCategory() {
         CategoryDTO result = mock(CategoryDTO.class);
@@ -44,7 +36,7 @@ public class Mocks {
         MediumDTO result = mock(MediumDTO.class);
         CategoryDTO category = getCategory();
         when(result.getCategory()).thenReturn(category);
-        List<ColumnValueDTO> list = Arrays.asList(getColumnValue(), getColumnValue(), getColumnValue());
+        List<String> list = Arrays.asList("Value1", "Value2", "Value3");
         when(result.getValues()).thenReturn(list);
         return result;
     }

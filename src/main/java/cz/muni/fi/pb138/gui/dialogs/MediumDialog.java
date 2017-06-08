@@ -3,7 +3,6 @@ package cz.muni.fi.pb138.gui.dialogs;
 import cz.muni.fi.pb138.backend.CategoryManager;
 import cz.muni.fi.pb138.entity.CategoryDTO;
 import cz.muni.fi.pb138.entity.ColumnDTO;
-import cz.muni.fi.pb138.entity.ColumnValueDTO;
 import cz.muni.fi.pb138.entity.MediumDTO;
 import cz.muni.fi.pb138.gui.view.CategoryListCellFactory;
 import javafx.collections.FXCollections;
@@ -18,21 +17,21 @@ import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 /**
  * Created by micha on 06.06.2017.
  */
-public class MediumDialog extends Dialog<MediumDTO>  {
-    private CategoryManager categoryManager;
-    private MediumDTO mediumDTO;
-    private String[] values = new String[100];
-
+public class MediumDialog extends Dialog<MediumDTO> {
+    private final Button okButton;
     @FXML
     GridPane valuesGridPane;
     @FXML
     ComboBox<CategoryDTO> categoryComboBox;
-    private final Button okButton;
+    private CategoryManager categoryManager;
+    private MediumDTO mediumDTO;
+    private String[] values = new String[100];
 
     public MediumDialog(CategoryManager categoryManager, MediumDTO mediumDTO) {
         super();
@@ -70,17 +69,7 @@ public class MediumDialog extends Dialog<MediumDTO>  {
 
         mediumDTO = new MediumDTO();
         mediumDTO.setCategory(selectedCategory);
-        mediumDTO.setValues(new ArrayList<>());
-
-        int index = 0;
-        for (ColumnDTO columnDTO : selectedCategory.getColumns()) {
-            ColumnValueDTO cValue = new ColumnValueDTO();
-            cValue.setColumn(columnDTO);
-            cValue.setValue(values[index]);
-            mediumDTO.getValues().add(cValue);
-            index++;
-        }
-
+        mediumDTO.setValues(new ArrayList<String>(Arrays.asList(values)));
         return mediumDTO;
     }
 
@@ -92,14 +81,9 @@ public class MediumDialog extends Dialog<MediumDTO>  {
     }
 
     private void getValues(MediumDTO mediumDTO) {
-        Collection<ColumnValueDTO> values = mediumDTO.getValues();
-        if (values == null) {
-            return;
-        }
-
         int index = 0;
-        for (ColumnValueDTO value : values) {
-            this.values[index] = value.getValue();
+        for (String value : mediumDTO.getValues()) {
+            this.values[index] = value;
             index++;
         }
     }
