@@ -11,3 +11,7 @@ Checkout [Javadocs](documentation.html) for basic architecture of our app
 ![Moving Medium UI](images/move-media-window.png)
 
 ![Creating New Medium UI](images/create-medium-window.png)
+
+# UML diagrams
+
+![Use Case](images/Cartotheque-UseCase.png)
