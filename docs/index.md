@@ -14,4 +14,4 @@ Checkout [Javadocs](documentation.html) for basic architecture of our app
 
 # UML diagrams
 
-![Use Case](images/Cartotheque-UseCase.png)
+![Use Case](images/cartotheque-usecase.png)
