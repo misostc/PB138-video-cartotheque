@@ -220,7 +220,7 @@ public class MainWindowController {
     }
 
     public void createCategoryButtonAction() {
-        CategoryDialog dialog = new CategoryDialog();
+        CategoryDialog dialog = new CategoryDialog(categoryManager, new CategoryDTO());
         Optional<CategoryDTO> categoryOptional = dialog.showAndWait();
 
         if (categoryOptional.isPresent()) {

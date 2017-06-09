@@ -1,7 +1,10 @@
 package cz.muni.fi.pb138.gui.dialogs;
 
+import cz.muni.fi.pb138.backend.CategoryManager;
 import cz.muni.fi.pb138.entity.CategoryDTO;
 import cz.muni.fi.pb138.entity.ColumnDTO;
+import cz.muni.fi.pb138.entity.MediumDTO;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
@@ -19,6 +22,9 @@ import java.util.UUID;
  * Created by micha on 06.06.2017.
  */
 public class CategoryDialog extends Dialog<CategoryDTO> {
+    private CategoryManager categoryManager;
+    private CategoryDTO categoryDTO;
+
     @FXML
     public ListView categoryListView;
     @FXML
@@ -26,8 +32,13 @@ public class CategoryDialog extends Dialog<CategoryDTO> {
     @FXML
     public TextField categoryNameField;
 
-    public CategoryDialog() {
+    private final Button okButton;
+    private final Button cancelButton;
+
+    public CategoryDialog(CategoryManager categoryManager, CategoryDTO categoryDTO) {
         super();
+        this.categoryManager = categoryManager;
+        this.categoryDTO = categoryDTO;
 
         String fxmlFile = "/fxml/editCategory.fxml";
         FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
@@ -39,16 +50,29 @@ public class CategoryDialog extends Dialog<CategoryDTO> {
         DialogPane dialogPane = getDialogPane();
         dialogPane.setContent(pane);
 
-        ButtonType loginButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
-        dialogPane.getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
-        Button noButton = (Button) dialogPane.lookupButton(loginButtonType);
-        noButton.setDefaultButton(false);
+        dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+        okButton = (Button) dialogPane.lookupButton(ButtonType.OK);
+        cancelButton = (Button) dialogPane.lookupButton(ButtonType.OK);
+        okButton.setDefaultButton(false);
+        initStyle(StageStyle.DECORATED);
+
+        setResultConverter(dialogButton -> (dialogButton == ButtonType.OK) ? createCategory() : null);
+
+        okButton.addEventFilter(
+                ActionEvent.ACTION,
+                event -> {
+                    if (createCategory()==null) {
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setHeaderText("You need to fill name and at least one column!");
+                        alert.showAndWait();
+                        event.consume();
+                    }
+                }
+        );
 
 
-        setResultConverter(dialogButton -> {
-            return createCategory();
-        });
 
+        System.out.println("editing");
 
         setTitle("Create Category");
         initStyle(StageStyle.UTILITY);
@@ -76,10 +100,10 @@ public class CategoryDialog extends Dialog<CategoryDTO> {
 
     public CategoryDTO createCategory() {
 
-        CategoryDTO newCategory = new CategoryDTO();
+        categoryDTO = new CategoryDTO();
         //todo generate unique ID
-        newCategory.setId(UUID.randomUUID().toString());
-        newCategory.setName(categoryNameField.getText());
+        categoryDTO.setId(Integer.toString(categoryManager.getCategories().size()+1));
+        categoryDTO.setName(categoryNameField.getText());
 
         List<ColumnDTO> columnList = new ArrayList<>();
         List<String> valuesList = categoryListView.getItems();
@@ -89,13 +113,18 @@ public class CategoryDialog extends Dialog<CategoryDTO> {
             tmp.setName(item);
             columnList.add(tmp);
         }
-        newCategory.setColumns(columnList);
-        System.out.println("Creating category " + newCategory.toString());
 
-        if (newCategory.isValid())
-            return newCategory;
+        categoryDTO.setColumns(columnList);
+
+        if (categoryDTO.isValid())
+            return categoryDTO;
         else
+        {
             return null;
+        }
+
 
     }
+
+
 }
