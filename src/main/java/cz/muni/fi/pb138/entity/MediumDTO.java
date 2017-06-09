@@ -8,15 +8,11 @@ import java.util.List;
 public class MediumDTO {
     CategoryDTO category;
     List<String> values = new ArrayList<>();
-    Node xmlNode;
+    int id;
 
-    public Node getXmlNode() {
-        return xmlNode;
-    }
+    public int getId() { return id; }
 
-    public void setXmlNode(Node xmlNode) {
-        this.xmlNode = xmlNode;
-    }
+    public void setId(int id) { this.id=id; }
 
     public CategoryDTO getCategory() {
         return category;
