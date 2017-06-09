@@ -4,6 +4,7 @@ import cz.muni.fi.pb138.entity.CategoryDTO;
 import cz.muni.fi.pb138.entity.MediumDTO;
 import cz.muni.fi.pb138.exceptions.*;
 
+import javax.xml.xpath.XPathExpressionException;
 import java.util.Collection;
 
 public interface MediumManager {
@@ -19,7 +20,7 @@ public interface MediumManager {
      * @throws ColumnsDontMatchCategoryException when the values inside medium don't adhere to columns specified in the category
      * @throws MediumNotPersistedException       when there was a problem persisting the medium.
      */
-    void addMedium(MediumDTO m);
+    void addMedium(MediumDTO m) throws XPathExpressionException;
 
     /**
      * Edits a medium
@@ -32,7 +33,7 @@ public interface MediumManager {
      * @throws ColumnsDontMatchCategoryException when the values inside medium don't adhere to columns specified in the category
      * @throws MediumNotPersistedException       when there was a problem persisting the medium.
      */
-    void editMedium(MediumDTO m);
+    void editMedium(MediumDTO m) throws XPathExpressionException;
 
     /**
      * Removes a medium.
@@ -44,7 +45,7 @@ public interface MediumManager {
      * @throws MediumNotFoundException   when there is no medium with this id
      * @throws MediumNotRemovedException when there was a problem with removing a medium
      */
-    void removeMedium(MediumDTO m);
+    void removeMedium(MediumDTO m) throws XPathExpressionException;
 
     /**
      * Searches for media with specified category.
@@ -55,7 +56,7 @@ public interface MediumManager {
      * @throws CategoryNotFoundException  when there is no category with this id
      * @throws MediaNotAvailableException when there was a problem retrieving media
      */
-    Collection<MediumDTO> findMediumByCategory(CategoryDTO c);
+    Collection<MediumDTO> findMediumByCategory(CategoryDTO c) throws XPathExpressionException;
 
     /**
      * Searches for media based on a column value.
@@ -66,5 +67,5 @@ public interface MediumManager {
      * @throws IllegalArgumentException   when value is null
      * @throws MediaNotAvailableException when there was a problem retrieving media
      */
-    Collection<MediumDTO> findMediumByValue(String value);
+    Collection<MediumDTO> findMediumByValue(String value) throws XPathExpressionException;
 }
