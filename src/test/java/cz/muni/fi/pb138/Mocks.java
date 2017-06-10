@@ -1,7 +1,6 @@
 package cz.muni.fi.pb138;
 
 import cz.muni.fi.pb138.entity.CategoryDTO;
-import cz.muni.fi.pb138.entity.ColumnDTO;
 import cz.muni.fi.pb138.entity.MediumDTO;
 
 import java.util.Arrays;
@@ -15,19 +14,11 @@ import static org.mockito.Mockito.when;
  */
 public class Mocks {
 
-    public static ColumnDTO getColumn() {
-        ColumnDTO result = mock(ColumnDTO.class);
-        when(result.getId()).thenReturn("1");
-        when(result.getName()).thenReturn("Column" + result.hashCode());
-        return result;
-    }
-
-
     public static CategoryDTO getCategory() {
         CategoryDTO result = mock(CategoryDTO.class);
         when(result.getId()).thenReturn("0");
         when(result.getName()).thenReturn("Category" + result.hashCode());
-        List<ColumnDTO> list = Arrays.asList(getColumn(), getColumn(), getColumn());
+        List<String> list = Arrays.asList("Column1", "Column2", "Column3");
         when(result.getColumns()).thenReturn(list);
         return result;
     }

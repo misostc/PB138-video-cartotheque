@@ -2,7 +2,6 @@ package cz.muni.fi.pb138.gui.controllers;
 
 import cz.muni.fi.pb138.backend.*;
 import cz.muni.fi.pb138.entity.CategoryDTO;
-import cz.muni.fi.pb138.entity.ColumnDTO;
 import cz.muni.fi.pb138.entity.MediumDTO;
 import cz.muni.fi.pb138.gui.dialogs.CategoryDialog;
 import cz.muni.fi.pb138.gui.dialogs.MediumDialog;
@@ -69,6 +68,8 @@ public class MainWindowController {
             mainPane.setDisable(true);
             saveMenuItem.setDisable(true);
         } else {
+            mainPane.setDisable(false);
+            saveMenuItem.setDisable(false);
             updateCategoriesList();
         }
     }
@@ -95,8 +96,8 @@ public class MainWindowController {
 
         int index = 0;
         mediumsTable.getColumns().clear();
-        for (ColumnDTO columnDTO : newValue.getColumns()) {
-            TableColumn<MediumViewModel, String> tableColumn = new TableColumn<>(columnDTO.getName());
+        for (String column : newValue.getColumns()) {
+            TableColumn<MediumViewModel, String> tableColumn = new TableColumn<>(column);
             tableColumn.setCellValueFactory(new MediumTableCellValueFactory(index++));
             mediumsTable.getColumns().add(tableColumn);
         }
