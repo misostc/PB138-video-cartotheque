@@ -1,6 +1,6 @@
 Github: https://github.com/misostc/PB138-video-cartotheque
 
-Software for managment of home video cartothèque
+Software for the managment of a home video cartothèque
 
 Authors:
 - Michal Bábel, učo 410434, GitHub: misostc
