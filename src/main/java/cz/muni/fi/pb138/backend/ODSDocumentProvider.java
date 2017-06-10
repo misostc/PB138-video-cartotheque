@@ -4,6 +4,8 @@ import cz.muni.fi.pb138.exceptions.DocumentNotAvailableException;
 import cz.muni.fi.pb138.exceptions.DocumentNotSavedException;
 import cz.muni.fi.pb138.exceptions.DocumentNotValidException;
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -12,6 +14,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import javax.xml.xpath.XPathExpressionException;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -51,6 +54,26 @@ public class ODSDocumentProvider implements DocumentProvider {
         } catch (Exception e) {
             throw new DocumentNotAvailableException(e);
         }
+
+        performInitalCleanup();
+    }
+
+    private void performInitalCleanup() {
+        removeAllEmptyTableRows();
+    }
+
+    private void removeAllEmptyTableRows() {
+        try {
+            NodeList nodeList = ODSXpathUtils.evaluateXpathNodeList(this, "//table:table-row[not(.//text:p)]");
+
+            for (int i = 0; i < nodeList.getLength(); i++) {
+                Node row = nodeList.item(i);
+                row.getParentNode().removeChild(row);
+            }
+        } catch (XPathExpressionException e) {
+            throw new DocumentNotAvailableException(e);
+        }
+
     }
 
     @Override

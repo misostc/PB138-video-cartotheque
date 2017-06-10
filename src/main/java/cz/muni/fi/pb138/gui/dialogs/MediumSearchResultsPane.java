@@ -75,8 +75,10 @@ public class MediumSearchResultsPane {
                 return getCategoryName();
             } else {
                 index--;
-                if (index < getValues().size()) {
-                    return String.format("%s [%s]", values.get(index), columnNames.get(index));
+                if (index < values.size()) {
+                    String value = values.get(index);
+                    String columnName = index < columnNames.size() ? columnNames.get(index) : "";
+                    return String.format("%s [%s]", value, columnName);
                 } else {
                     return "";
                 }

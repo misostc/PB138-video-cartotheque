@@ -39,14 +39,17 @@ public class MediumManagerImpl implements MediumManager {
         Node nodeNewRow = documentProvider.getDocument().createElementNS(ODSXpathUtils.TABLE_NAMESPACE, "table:table-row");
 
         //table-cell value strings
-        for (int i = 0; i < m.getValues().size(); i++) {
+        for (String value: m.getValues()) {
             Node nodeNewValue = documentProvider.getDocument().createElementNS(ODSXpathUtils.TABLE_NAMESPACE, "table:table-cell");
-            ((Element) nodeNewValue).setAttributeNS(ODSXpathUtils.TABLE_NAMESPACE,"table:style-name", "ce3");
-            ((Element) nodeNewValue).setAttributeNS(ODSXpathUtils.OFFICE_NAMESPACE,"office:value-type", "string");
-            ((Element) nodeNewValue).setAttributeNS(ODSXpathUtils.CALCEXT_NAMESPACE,"calcext:value-type", "string");
-            Node newValueText = documentProvider.getDocument().createElementNS(ODSXpathUtils.TEXT_NAMESPACE, "text:p");
-            newValueText.setTextContent(m.getValues().get(i));
-            nodeNewValue.appendChild(newValueText);
+
+            if (value != null && !value.trim().isEmpty()) {
+                Node newValueText = documentProvider.getDocument().createElementNS(ODSXpathUtils.TEXT_NAMESPACE, "text:p");
+                ((Element) nodeNewValue).setAttributeNS(ODSXpathUtils.OFFICE_NAMESPACE,"office:value-type", "string");
+                ((Element) nodeNewValue).setAttributeNS(ODSXpathUtils.CALCEXT_NAMESPACE,"calcext:value-type", "string");
+                newValueText.setTextContent(value);
+                nodeNewValue.appendChild(newValueText);
+            }
+
             nodeNewRow.appendChild(nodeNewValue);
         }
 

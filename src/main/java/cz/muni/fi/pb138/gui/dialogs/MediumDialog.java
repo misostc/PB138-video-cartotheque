@@ -68,8 +68,16 @@ public class MediumDialog extends Dialog<MediumDTO> {
 
         mediumDTO = new MediumDTO();
         mediumDTO.setCategory(selectedCategory);
-        mediumDTO.setValues(new ArrayList<String>(Arrays.asList(values)));
+        mediumDTO.setValues(constructValues(selectedCategory));
         return mediumDTO;
+    }
+
+    private List<String> constructValues(CategoryDTO selectedCategory) {
+        List<String> result = new ArrayList<>();
+        for (int i = 0; i < selectedCategory.getColumns().size(); i++) {
+            result.add(values[i]);
+        }
+        return result;
     }
 
     @FXML
