@@ -65,9 +65,6 @@ public class CategoryDialog extends Dialog<CategoryDTO> {
                 }
         );
 
-
-        System.out.println("editing");
-
         setTitle("Create Category");
         initStyle(StageStyle.UTILITY);
 
@@ -95,13 +92,15 @@ public class CategoryDialog extends Dialog<CategoryDTO> {
     public CategoryDTO createCategory() {
 
         categoryDTO = new CategoryDTO();
-        //todo generate unique ID
         categoryDTO.setName(categoryNameField.getText());
         List<String> columnList = new ArrayList<String>(categoryListView.getItems());
         categoryDTO.setColumns(columnList);
 
         if (categoryDTO.isValid())
+        {
+            categoryListView.getItems().add(0,"Id");
             return categoryDTO;
+        }
         else {
             return null;
         }
