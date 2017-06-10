@@ -4,9 +4,7 @@ import cz.muni.fi.pb138.entity.CategoryDTO;
 import cz.muni.fi.pb138.exceptions.CategoriesNotAvailableException;
 import cz.muni.fi.pb138.exceptions.CategoryNotPersistedException;
 import cz.muni.fi.pb138.exceptions.CategoryNotRemovedException;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.w3c.dom.*;
 
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathExpression;
@@ -42,23 +40,24 @@ public class CategoryManagerImpl implements CategoryManager {
     }
 
     private Node createNodeFromCategory(CategoryDTO c) {
-        /*
-        <table:table table:name="categoryName">
-            <table:row>
-                <table:cell>
-                    <text:p>column1</text:p>
-                </table:cell>
-                <table:cell>
-                    <text:p>column1</text:p>
-                </table:cell>
-                <table:cell>
-                    <text:p>column1</text:p>
-                </table:cell>
+        Element tableName = documentProvider.getDocument().createElement("table:table");
+        Element row = documentProvider.getDocument().createElement("table:table-row");
 
-            </table:row>
-        </table:table>
-         */
-        return null;
+        List<String> columns = c.getColumns();
+        for (int i=0;i<columns.size();i++) {
+            Element cell = documentProvider.getDocument().createElement("table:table-cell");
+            Element p = documentProvider.getDocument().createElement("text:p");
+            p.setTextContent(columns.get(i));
+            cell.appendChild(p);
+            row.appendChild(cell);
+        }
+        tableName.appendChild(row);
+
+        Attr tableAttribute = documentProvider.getDocument().createAttribute("table:name");
+        tableAttribute.setValue(c.getName());
+        tableName.setAttributeNode(tableAttribute);
+
+        return tableName;
     }
 
     @Override
@@ -130,8 +129,24 @@ public class CategoryManagerImpl implements CategoryManager {
 
     private List<String> getColumnsFromNode(Node item) {
         List<String> result = new ArrayList<>();
-        // najst prvy riadok = table:table-row
-        // z neho vybrat vsetky nazvy a dat ich do listu a vratit
+
+        NodeList cells = null;
+
+        NodeList itemChildren = item.getChildNodes();
+        for (int i=0;i<itemChildren.getLength();i++) {
+            //if(itemChildren.item(i).getNodeName() == "table:table-row"){
+            if(itemChildren.item(i).getNodeName().equals("table:table-row")){
+                cells = itemChildren.item(i).getChildNodes();
+                break;
+            }
+        }
+
+        for (int i=0;i<cells.getLength();i++) {
+            if (cells.item(i).hasChildNodes()) {
+                result.add(cells.item(i).getFirstChild().getTextContent());
+            }
+        }
+
         return result;
     }
 
