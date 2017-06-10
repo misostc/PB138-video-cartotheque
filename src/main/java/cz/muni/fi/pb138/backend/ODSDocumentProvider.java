@@ -79,7 +79,7 @@ public class ODSDocumentProvider implements DocumentProvider {
 
             restoreTempFile();
         } catch (Exception e) {
-            throw new DocumentNotSavedException(e.getMessage());
+            throw new DocumentNotSavedException(e);
         }
 
     }
@@ -90,7 +90,8 @@ public class ODSDocumentProvider implements DocumentProvider {
     }
 
     private void constructContentXMLFile(ZipOutputStream newZipFileOS) throws IOException, TransformerException {
-        newZipFileOS.putNextEntry(new ZipEntry(CONTENT_XML_FILENAME));
+        ZipEntry entry = new ZipEntry(CONTENT_XML_FILENAME);
+        newZipFileOS.putNextEntry(entry);
 
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
@@ -101,7 +102,8 @@ public class ODSDocumentProvider implements DocumentProvider {
     }
 
     private void copyEntryToZip(ZipFile originalFile, ZipOutputStream newZipFileOS, ZipEntry entryIn) throws IOException {
-        newZipFileOS.putNextEntry(entryIn);
+        ZipEntry newEntry = new ZipEntry(entryIn.getName());
+        newZipFileOS.putNextEntry(newEntry);
         InputStream is = originalFile.getInputStream(entryIn);
         byte[] buf = new byte[1024];
         int len;

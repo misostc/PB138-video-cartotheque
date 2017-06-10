@@ -32,8 +32,13 @@ public class CategoryManagerImpl implements CategoryManager {
     public void addCategory(CategoryDTO c) {
         try {
             Node node = createNodeFromCategory(c);
-            Node parent = getCategoriesParent();
-            parent.appendChild(node);
+
+            Node firstTable = evaluateXpathNode("//*[local-name()='table']");
+            if (firstTable != null) {
+                firstTable.getParentNode().insertBefore(node, firstTable);
+            } else {
+                getCategoriesParent().appendChild(node);
+            }
         } catch (XPathExpressionException e) {
             throw new CategoryNotPersistedException(e);
         }
@@ -46,6 +51,8 @@ public class CategoryManagerImpl implements CategoryManager {
         List<String> columns = c.getColumns();
         for (int i=0;i<columns.size();i++) {
             Element cell = documentProvider.getDocument().createElement("table:table-cell");
+            assignAttributeNS(cell, "calcext:value-type", "urn:org:documentfoundation:names:experimental:calc:xmlns:calcext:1.0", "string");
+            assignAttributeNS(cell, "office:value-type", "urn:oasis:names:tc:opendocument:xmlns:office:1.0", "string");
             Element p = documentProvider.getDocument().createElement("text:p");
             p.setTextContent(columns.get(i));
             cell.appendChild(p);
@@ -53,11 +60,20 @@ public class CategoryManagerImpl implements CategoryManager {
         }
         tableName.appendChild(row);
 
-        Attr tableAttribute = documentProvider.getDocument().createAttribute("table:name");
-        tableAttribute.setValue(c.getName());
-        tableName.setAttributeNode(tableAttribute);
+        assignAttribute(tableName, "table:name", c.getName());
 
         return tableName;
+    }
+
+    private void assignAttribute(Element element, String attributeName, String value) {
+        Attr attribute = documentProvider.getDocument().createAttribute(attributeName);
+        attribute.setValue(value);
+        element.setAttributeNode(attribute);
+    }
+    private void assignAttributeNS(Element element, String attributeName, String namespaceURI, String value) {
+        Attr attribute = documentProvider.getDocument().createAttributeNS(namespaceURI, attributeName);
+        attribute.setValue(value);
+        element.setAttributeNode(attribute);
     }
 
     @Override
