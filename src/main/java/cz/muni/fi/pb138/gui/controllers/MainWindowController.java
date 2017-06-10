@@ -82,6 +82,34 @@ public class MainWindowController {
         categoriesList.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
             updateMediumList(newValue);
         });
+
+        ContextMenu cm = createCategoryContextMenu();
+        categoriesList.setContextMenu(cm);
+    }
+
+    private ContextMenu createCategoryContextMenu() {
+        ContextMenu result = new ContextMenu();
+        MenuItem deleteMenuItem = new MenuItem("Delete");
+        deleteMenuItem.setOnAction(this::deleteCategoryMenuAction);
+
+        result.getItems().addAll(deleteMenuItem);
+        return result;
+    }
+
+    private void deleteCategoryMenuAction(ActionEvent actionEvent) {
+        CategoryDTO selectedItem = categoriesList.getSelectionModel().getSelectedItem();
+        if (selectedItem == null) {
+            return;
+        }
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirm Delete");
+        alert.setHeaderText("Do you wish to delete the whole category? Doing so will also remove ALL media under it.");
+        Optional<ButtonType> chosenButton = alert.showAndWait();
+
+        if (chosenButton.isPresent() && chosenButton.get().equals(ButtonType.OK)) {
+            categoryManager.removeCategory(selectedItem);
+            dataUpdated();
+        }
     }
 
     private void updateMediumList(CategoryDTO newValue) {

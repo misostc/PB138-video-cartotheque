@@ -75,20 +75,10 @@ public class CategoryManagerImpl implements CategoryManager {
         }
     }
 
-    private Node findCategoryInDocument(CategoryDTO c) throws XPathExpressionException {
-        Integer id = Integer.valueOf(c.getId());
+    private Node findCategoryInDocument(CategoryDTO category) throws XPathExpressionException {
+        Integer id = category.getId();
 
-        Document document = documentProvider.getDocument();
-        NodeList nodes = getCategoriesNodeList();
-        for (int i = 0; i < nodes.getLength(); i++) {
-
-            Node item = nodes.item(i);
-            if (item.hashCode() == id) {
-                return item;
-            }
-        }
-
-        return null;
+        return ODSXpathUtils.evaluateXpathNode(documentProvider, String.format("//table:table[%d]", id + 1));
     }
 
     @Override
