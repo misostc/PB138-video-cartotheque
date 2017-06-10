@@ -1,6 +1,5 @@
 package cz.muni.fi.pb138.gui.dialogs;
 
-import cz.muni.fi.pb138.entity.ColumnDTO;
 import cz.muni.fi.pb138.entity.MediumDTO;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.Node;
@@ -60,7 +59,7 @@ public class MediumSearchResultsPane {
         public MediumSearchResult(MediumDTO mediumDTO) {
             this.categoryName = mediumDTO.getCategory().getName();
             this.values = mediumDTO.getValues();
-            this.columnNames = mediumDTO.getCategory().getColumns().stream().map(ColumnDTO::getName).collect(Collectors.toList());
+            this.columnNames = mediumDTO.getCategory().getColumns();
         }
 
         public String getCategoryName() {

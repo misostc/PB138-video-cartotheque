@@ -2,8 +2,6 @@ package cz.muni.fi.pb138.gui.dialogs;
 
 import cz.muni.fi.pb138.backend.CategoryManager;
 import cz.muni.fi.pb138.entity.CategoryDTO;
-import cz.muni.fi.pb138.entity.ColumnDTO;
-import cz.muni.fi.pb138.entity.MediumDTO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,7 +14,6 @@ import javafx.stage.StageStyle;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Created by micha on 06.06.2017.
@@ -104,16 +101,7 @@ public class CategoryDialog extends Dialog<CategoryDTO> {
         //todo generate unique ID
         categoryDTO.setId(Integer.toString(categoryManager.getCategories().size()+1));
         categoryDTO.setName(categoryNameField.getText());
-
-        List<ColumnDTO> columnList = new ArrayList<>();
-        List<String> valuesList = categoryListView.getItems();
-        for (String item : valuesList) {
-            ColumnDTO tmp = new ColumnDTO();
-            tmp.setId(Integer.toString(columnList.size() + 1));
-            tmp.setName(item);
-            columnList.add(tmp);
-        }
-
+        List<String> columnList = new ArrayList<String>(categoryListView.getItems());
         categoryDTO.setColumns(columnList);
 
         if (categoryDTO.isValid())
