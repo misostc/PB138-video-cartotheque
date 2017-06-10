@@ -6,16 +6,10 @@ import cz.muni.fi.pb138.exceptions.CategoryNotPersistedException;
 import cz.muni.fi.pb138.exceptions.CategoryNotRemovedException;
 import org.w3c.dom.*;
 
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import static javax.xml.xpath.XPathConstants.NODE;
-import static javax.xml.xpath.XPathConstants.NODESET;
 
 /**
  * Created by Michal.Babel on 01-Jun-17.
@@ -33,7 +27,7 @@ public class CategoryManagerImpl implements CategoryManager {
         try {
             Node node = createNodeFromCategory(c);
 
-            Node firstTable = evaluateXpathNode("//*[local-name()='table']");
+            Node firstTable = ODSXpathUtils.evaluateXpathNode(documentProvider, "//table:table[1]");
             if (firstTable != null) {
                 firstTable.getParentNode().insertBefore(node, firstTable);
             } else {
@@ -53,7 +47,7 @@ public class CategoryManagerImpl implements CategoryManager {
             Element cell = documentProvider.getDocument().createElementNS(ODSXpathUtils.TABLE_NAMESPACE, "table:table-cell");
             assignAttributeNS(cell, "calcext:value-type", ODSXpathUtils.CALCEXT_NAMESPACE, "string");
             assignAttributeNS(cell, "office:value-type", ODSXpathUtils.OFFICE_NAMESPACE, "string");
-            Element p = documentProvider.getDocument().createElementNS(ODSXpathUtils.TEXT_NAMESPACE,"text:p");
+            Element p = documentProvider.getDocument().createElementNS(ODSXpathUtils.TEXT_NAMESPACE, "text:p");
             p.setTextContent(columns.get(i));
             cell.appendChild(p);
             row.appendChild(cell);
@@ -85,7 +79,7 @@ public class CategoryManagerImpl implements CategoryManager {
         Integer id = Integer.valueOf(c.getId());
 
         Document document = documentProvider.getDocument();
-        NodeList nodes = getCategoriesNodeList(document);
+        NodeList nodes = getCategoriesNodeList();
         for (int i = 0; i < nodes.getLength(); i++) {
 
             Node item = nodes.item(i);
@@ -99,10 +93,8 @@ public class CategoryManagerImpl implements CategoryManager {
 
     @Override
     public Collection<CategoryDTO> getCategories() {
-        Document document = documentProvider.getDocument();
-
         try {
-            NodeList nodes = getCategoriesNodeList(document);
+            NodeList nodes = getCategoriesNodeList();
             return convertNodeListToCategories(nodes);
 
         } catch (XPathExpressionException e) {
@@ -110,10 +102,8 @@ public class CategoryManagerImpl implements CategoryManager {
         }
     }
 
-    private NodeList getCategoriesNodeList(Document document) throws XPathExpressionException {
-        XPath xPath = XPathFactory.newInstance().newXPath();
-        XPathExpression xPathExpression = xPath.compile("//*[local-name()='table'][.//*[local-name()='p']]");
-        return (NodeList) xPathExpression.evaluate(document, NODESET);
+    private NodeList getCategoriesNodeList() throws XPathExpressionException {
+        return ODSXpathUtils.evaluateXpathNodeList(documentProvider, "//table:table[.//text:p]");
     }
 
     private Collection<CategoryDTO> convertNodeListToCategories(NodeList nodeList) {
@@ -165,15 +155,8 @@ public class CategoryManagerImpl implements CategoryManager {
     }
 
     public Node getCategoriesParent() throws XPathExpressionException {
-        return evaluateXpathNode("//*[local-name()='spreadsheet']");
+        return ODSXpathUtils.evaluateXpathNode(documentProvider, "//office:spreadsheet");
     }
 
 
-    private Node evaluateXpathNode(String xpathString) throws XPathExpressionException {
-        return (Node) XPathFactory
-                .newInstance()
-                .newXPath()
-                .compile(xpathString)
-                .evaluate(documentProvider.getDocument(), NODE);
-    }
 }
