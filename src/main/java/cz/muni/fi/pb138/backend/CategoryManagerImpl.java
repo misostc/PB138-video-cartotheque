@@ -143,10 +143,21 @@ public class CategoryManagerImpl implements CategoryManager {
 
         for (int i = 0; i < cells.getLength(); i++) {
             String textContent = cells.item(i).getTextContent();
-            result.add(textContent == null ? "<no-text>" : textContent);
+            result.add(textContent == null ? "" : textContent);
         }
 
+        removeEndingWhitespace(result);
+
         return result;
+    }
+
+    private static void removeEndingWhitespace(List<String> result) {
+        for (int i = result.size() - 1; i != 0; i--) {
+            String value = result.get(i);
+            if (value == null || value.trim().isEmpty()) {
+                result.remove(i);
+            }
+        }
     }
 
     private static String getCategoryNameFromIndex(Node item) {
