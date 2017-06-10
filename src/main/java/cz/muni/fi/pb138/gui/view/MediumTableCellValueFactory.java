@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class MediumTableCellValueFactory implements Callback<TableColumn.CellDataFeatures<MediumViewModel, String>, ObservableValue<String>> {
 
-    int index;
+    private final int index;
 
     public MediumTableCellValueFactory(int index) {
         this.index = index;

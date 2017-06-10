@@ -47,7 +47,7 @@ public class MainWindowController {
     @FXML
     TableView<MediumViewModel> mediumsTable;
 
-    public static void setDocumentProvider(DocumentProvider documentProvider) {
+    private static void setDocumentProvider(DocumentProvider documentProvider) {
         MainWindowController.documentProvider = documentProvider;
     }
 
@@ -84,9 +84,7 @@ public class MainWindowController {
             categoriesList.setCellFactory(new CategoryListCellFactory());
             categoriesList.getItems().clear();
             categoriesList.setItems(categoryDTOS);
-            categoriesList.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
-                updateMediumList(newValue);
-            });
+            categoriesList.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> updateMediumList(newValue));
 
             ContextMenu cm = createCategoryContextMenu();
             categoriesList.setContextMenu(cm);
@@ -98,7 +96,7 @@ public class MainWindowController {
 
     private void createExceptionAlert(Exception e) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("An Error occured.");
+        alert.setTitle("An Error occurred.");
 
         if (e instanceof CategoriesNotAvailableException) {
             alert.setHeaderText("There was a problem retrieving categories.");
@@ -251,7 +249,7 @@ public class MainWindowController {
         if (documentProvider != null) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Confirm Open");
-            alert.setHeaderText("Opening a new file will discard changes you havent saved. Do you wish to proceed?");
+            alert.setHeaderText("Opening a new file will discard changes you haven't saved. Do you wish to proceed?");
             Optional<ButtonType> chosenButton = alert.showAndWait();
 
             if (chosenButton.isPresent() && !chosenButton.get().equals(ButtonType.OK)) {

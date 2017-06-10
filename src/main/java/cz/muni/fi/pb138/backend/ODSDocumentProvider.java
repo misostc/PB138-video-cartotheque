@@ -28,9 +28,9 @@ import java.util.zip.ZipOutputStream;
  */
 public class ODSDocumentProvider implements DocumentProvider {
 
-    public static final String CONTENT_XML_FILENAME = "content.xml";
+    private static final String CONTENT_XML_FILENAME = "content.xml";
     private Document document;
-    private String filename;
+    private final String filename;
 
     /**
      * Creates document provider from ODS file
@@ -50,14 +50,14 @@ public class ODSDocumentProvider implements DocumentProvider {
             DocumentBuilder builder = factory.newDocumentBuilder();
             document = builder.parse(inputStream);
             zipFile.close();
-            performInitalCleanup();
+            performInitialCleanup();
         } catch (Exception e) {
             throw new DocumentNotValidException(e);
         }
 
     }
 
-    private void performInitalCleanup() throws XPathExpressionException {
+    private void performInitialCleanup() throws XPathExpressionException {
         removeAllEmptyTableRows();
     }
 

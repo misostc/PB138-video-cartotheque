@@ -19,20 +19,17 @@ import java.util.List;
  * Created by micha on 06.06.2017.
  */
 public class CategoryDialog extends Dialog<CategoryDTO> {
-    private final Button okButton;
-    private final Button cancelButton;
     @FXML
-    public ListView categoryListView;
+    private ListView categoryListView;
     @FXML
-    public TextField newColumnField;
+    private TextField newColumnField;
     @FXML
-    public TextField categoryNameField;
-    private CategoryManager categoryManager;
+    private TextField categoryNameField;
     private CategoryDTO categoryDTO;
 
     public CategoryDialog(CategoryManager categoryManager, CategoryDTO categoryDTO) {
         super();
-        this.categoryManager = categoryManager;
+        CategoryManager categoryManager1 = categoryManager;
         this.categoryDTO = categoryDTO;
 
         String fxmlFile = "/fxml/category.fxml";
@@ -46,8 +43,7 @@ public class CategoryDialog extends Dialog<CategoryDTO> {
         dialogPane.setContent(pane);
 
         dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
-        okButton = (Button) dialogPane.lookupButton(ButtonType.OK);
-        cancelButton = (Button) dialogPane.lookupButton(ButtonType.OK);
+        Button okButton = (Button) dialogPane.lookupButton(ButtonType.OK);
         okButton.setDefaultButton(false);
         initStyle(StageStyle.DECORATED);
 
@@ -89,7 +85,7 @@ public class CategoryDialog extends Dialog<CategoryDTO> {
         System.out.println("editing");
     }
 
-    public CategoryDTO createCategory() {
+    private CategoryDTO createCategory() {
 
         categoryDTO = new CategoryDTO();
         categoryDTO.setName(categoryNameField.getText());

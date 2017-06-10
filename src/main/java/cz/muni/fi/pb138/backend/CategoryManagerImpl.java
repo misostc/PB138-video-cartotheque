@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class CategoryManagerImpl implements CategoryManager {
 
-    private DocumentProvider documentProvider;
+    private final DocumentProvider documentProvider;
 
     public CategoryManagerImpl(DocumentProvider documentProvider) {
         this.documentProvider = documentProvider;
@@ -44,6 +44,10 @@ public class CategoryManagerImpl implements CategoryManager {
                 cells = itemChildren.item(i).getChildNodes();
                 break;
             }
+        }
+
+        if (cells == null) {
+            return new ArrayList<>();
         }
 
         for (int i = 0; i < cells.getLength(); i++) {
@@ -98,12 +102,12 @@ public class CategoryManagerImpl implements CategoryManager {
         Element row = documentProvider.getDocument().createElementNS(ODSXpathUtils.TABLE_NAMESPACE, "table:table-row");
 
         List<String> columns = c.getColumns();
-        for (int i = 0; i < columns.size(); i++) {
+        for (String column : columns) {
             Element cell = documentProvider.getDocument().createElementNS(ODSXpathUtils.TABLE_NAMESPACE, "table:table-cell");
             assignAttributeNS(cell, "calcext:value-type", ODSXpathUtils.CALCEXT_NAMESPACE, "string");
             assignAttributeNS(cell, "office:value-type", ODSXpathUtils.OFFICE_NAMESPACE, "string");
             Element p = documentProvider.getDocument().createElementNS(ODSXpathUtils.TEXT_NAMESPACE, "text:p");
-            p.setTextContent(columns.get(i));
+            p.setTextContent(column);
             cell.appendChild(p);
             row.appendChild(cell);
         }
@@ -172,7 +176,7 @@ public class CategoryManagerImpl implements CategoryManager {
         return result;
     }
 
-    public Node getCategoriesParent() throws XPathExpressionException {
+    private Node getCategoriesParent() throws XPathExpressionException {
         return ODSXpathUtils.evaluateXpathNode(documentProvider, "//office:spreadsheet");
     }
 

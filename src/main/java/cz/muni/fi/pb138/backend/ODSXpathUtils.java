@@ -15,13 +15,13 @@ import static javax.xml.xpath.XPathConstants.*;
  * Class useful for Xpath-related functions on ODS documents, defines namespace prefixes
  * used for querying ODS documents.
  */
-public class ODSXpathUtils {
+class ODSXpathUtils {
     public static final String TABLE_NAMESPACE = "urn:oasis:names:tc:opendocument:xmlns:table:1.0";
     public static final String TEXT_NAMESPACE = "urn:oasis:names:tc:opendocument:xmlns:text:1.0";
     public static final String CALCEXT_NAMESPACE = "urn:org:documentfoundation:names:experimental:calc:xmlns:calcext:1.0";
     public static final String OFFICE_NAMESPACE = "urn:oasis:names:tc:opendocument:xmlns:office:1.0";
 
-    static XPath getxPath() {
+    private static XPath getxPath() {
         XPath xPath = XPathFactory.newInstance().newXPath();
         NamespaceContext nsContext = new NamespaceContext() {
             @Override
@@ -31,6 +31,12 @@ public class ODSXpathUtils {
                 }
                 if ("text".equals(prefix)) {
                     return TEXT_NAMESPACE;
+                }
+                if ("office".equals(prefix)) {
+                    return OFFICE_NAMESPACE;
+                }
+                if ("calcext".equals(prefix)) {
+                    return CALCEXT_NAMESPACE;
                 }
                 return null;
             }

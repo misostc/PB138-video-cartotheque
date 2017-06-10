@@ -21,7 +21,7 @@ public class MainApplication extends Application {
 
         String fxmlFile = "/fxml/main.fxml";
         FXMLLoader loader = new FXMLLoader();
-        Parent rootNode = (Parent) loader.load(getClass().getResourceAsStream(fxmlFile));
+        Parent rootNode = loader.load(getClass().getResourceAsStream(fxmlFile));
 
         Scene scene = new Scene(rootNode, 600, 400);
 
@@ -29,15 +29,15 @@ public class MainApplication extends Application {
         stage.setScene(scene);
         stage.show();
 
-        setupUngaughtExceptionHandler();
+        setupUncaughtExceptionHandler();
     }
 
-    private void setupUngaughtExceptionHandler() {
+    private void setupUncaughtExceptionHandler() {
         Thread.currentThread().setUncaughtExceptionHandler((thread, throwable) -> {
             throwable.printStackTrace();
 
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Exception occured.");
+            alert.setTitle("Exception occurred.");
             alert.setHeaderText("There has been an unexpected error.");
 
             StringWriter exceptionWriter = new StringWriter();
