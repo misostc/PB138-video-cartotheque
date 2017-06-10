@@ -72,6 +72,9 @@ public class MainWindowController {
             saveMenuItem.setDisable(false);
             updateCategoriesList();
         }
+
+        mediumsTable.getColumns().clear();
+        mediumsTable.getItems().clear();
     }
 
     private void updateCategoriesList() {
@@ -160,7 +163,12 @@ public class MainWindowController {
             MediumDTO medium = selectedItem.getOriginal();
             mediumManager.removeMedium(medium);
             dataUpdated();
+            selectCategory(medium.getCategory());
         }
+    }
+
+    private void selectCategory(CategoryDTO category) {
+        categoriesList.getSelectionModel().select(category);
     }
 
     private void editMediumMenuAction(ActionEvent event) {
@@ -181,6 +189,7 @@ public class MainWindowController {
             mediumManager.addMedium(newMedium);
 
             dataUpdated();
+            selectCategory(newMedium.getCategory());
         }
     }
 
@@ -260,6 +269,7 @@ public class MainWindowController {
             CategoryDTO newCategory = categoryOptional.get();
             categoryManager.addCategory(newCategory);
             dataUpdated();
+            selectCategory(categoryManager.getCategories().iterator().next());
         }
     }
 
@@ -272,6 +282,7 @@ public class MainWindowController {
             MediumDTO newMedium = mediumOptional.get();
             mediumManager.addMedium(newMedium);
             dataUpdated();
+            selectCategory(newMedium.getCategory());
         }
     }
 
