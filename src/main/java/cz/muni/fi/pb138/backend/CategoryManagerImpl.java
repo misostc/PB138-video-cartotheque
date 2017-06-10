@@ -49,7 +49,7 @@ public class CategoryManagerImpl implements CategoryManager {
         Element row = documentProvider.getDocument().createElement("table:table-row");
 
         List<String> columns = c.getColumns();
-        for (int i=0;i<columns.size();i++) {
+        for (int i = 0; i < columns.size(); i++) {
             Element cell = documentProvider.getDocument().createElement("table:table-cell");
             assignAttributeNS(cell, "calcext:value-type", "urn:org:documentfoundation:names:experimental:calc:xmlns:calcext:1.0", "string");
             assignAttributeNS(cell, "office:value-type", "urn:oasis:names:tc:opendocument:xmlns:office:1.0", "string");
@@ -70,6 +70,7 @@ public class CategoryManagerImpl implements CategoryManager {
         attribute.setValue(value);
         element.setAttributeNode(attribute);
     }
+
     private void assignAttributeNS(Element element, String attributeName, String namespaceURI, String value) {
         Attr attribute = documentProvider.getDocument().createAttributeNS(namespaceURI, attributeName);
         attribute.setValue(value);
@@ -91,7 +92,7 @@ public class CategoryManagerImpl implements CategoryManager {
 
         Document document = documentProvider.getDocument();
         NodeList nodes = getCategoriesNodeList(document);
-        for (int i=0;i<nodes.getLength();i++) {
+        for (int i = 0; i < nodes.getLength(); i++) {
 
             Node item = nodes.item(i);
             if (item.hashCode() == id) {
@@ -124,7 +125,7 @@ public class CategoryManagerImpl implements CategoryManager {
     private Collection<CategoryDTO> convertNodeListToCategories(NodeList nodeList) {
         List<CategoryDTO> result = new ArrayList<>();
 
-        for (int i=0;i<nodeList.getLength();i++) {
+        for (int i = 0; i < nodeList.getLength(); i++) {
 
             Node item = nodeList.item(i);
             result.add(convertNodeToCategory(item));
@@ -149,15 +150,15 @@ public class CategoryManagerImpl implements CategoryManager {
         NodeList cells = null;
 
         NodeList itemChildren = item.getChildNodes();
-        for (int i=0;i<itemChildren.getLength();i++) {
+        for (int i = 0; i < itemChildren.getLength(); i++) {
             //if(itemChildren.item(i).getNodeName() == "table:table-row"){
-            if(itemChildren.item(i).getNodeName().equals("table:table-row")){
+            if (itemChildren.item(i).getNodeName().equals("table:table-row")) {
                 cells = itemChildren.item(i).getChildNodes();
                 break;
             }
         }
 
-        for (int i=0;i<cells.getLength();i++) {
+        for (int i = 0; i < cells.getLength(); i++) {
             if (cells.item(i).hasChildNodes()) {
                 result.add(cells.item(i).getFirstChild().getTextContent());
             }
@@ -177,10 +178,10 @@ public class CategoryManagerImpl implements CategoryManager {
 
 
     private Node evaluateXpathNode(String xpathString) throws XPathExpressionException {
-        return (Node)XPathFactory
+        return (Node) XPathFactory
                 .newInstance()
                 .newXPath()
                 .compile(xpathString)
-                .evaluate(documentProvider.getDocument(),NODE);
+                .evaluate(documentProvider.getDocument(), NODE);
     }
 }

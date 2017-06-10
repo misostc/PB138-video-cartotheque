@@ -19,18 +19,16 @@ import java.util.List;
  * Created by micha on 06.06.2017.
  */
 public class CategoryDialog extends Dialog<CategoryDTO> {
-    private CategoryManager categoryManager;
-    private CategoryDTO categoryDTO;
-
+    private final Button okButton;
+    private final Button cancelButton;
     @FXML
     public ListView categoryListView;
     @FXML
     public TextField newColumnField;
     @FXML
     public TextField categoryNameField;
-
-    private final Button okButton;
-    private final Button cancelButton;
+    private CategoryManager categoryManager;
+    private CategoryDTO categoryDTO;
 
     public CategoryDialog(CategoryManager categoryManager, CategoryDTO categoryDTO) {
         super();
@@ -58,7 +56,7 @@ public class CategoryDialog extends Dialog<CategoryDTO> {
         okButton.addEventFilter(
                 ActionEvent.ACTION,
                 event -> {
-                    if (createCategory()==null) {
+                    if (createCategory() == null) {
                         Alert alert = new Alert(Alert.AlertType.WARNING);
                         alert.setHeaderText("You need to fill name and at least one column!");
                         alert.showAndWait();
@@ -66,7 +64,6 @@ public class CategoryDialog extends Dialog<CategoryDTO> {
                     }
                 }
         );
-
 
 
         System.out.println("editing");
@@ -99,15 +96,14 @@ public class CategoryDialog extends Dialog<CategoryDTO> {
 
         categoryDTO = new CategoryDTO();
         //todo generate unique ID
-        categoryDTO.setId(Integer.toString(categoryManager.getCategories().size()+1));
+        categoryDTO.setId(Integer.toString(categoryManager.getCategories().size() + 1));
         categoryDTO.setName(categoryNameField.getText());
         List<String> columnList = new ArrayList<String>(categoryListView.getItems());
         categoryDTO.setColumns(columnList);
 
         if (categoryDTO.isValid())
             return categoryDTO;
-        else
-        {
+        else {
             return null;
         }
 
