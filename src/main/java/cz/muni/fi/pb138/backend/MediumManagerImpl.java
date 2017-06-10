@@ -146,15 +146,31 @@ public class MediumManagerImpl implements MediumManager {
         for (int i = 0; i < nodeList.getLength(); i++) {
             MediumDTO mediumDTO = new MediumDTO();
             //fill medium properties
-            for (int j = 1; j < nodeList.item(i).getChildNodes().getLength(); j++) {
-                mediumDTO.getValues().add(nodeList.item(i).getChildNodes().item(j).getTextContent());
+            Node item = nodeList.item(i);
+            for (int j = 0; j < item.getChildNodes().getLength(); j++) {
+                mediumDTO.getValues().add(item.getChildNodes().item(j).getTextContent());
             }
 
-            mediumDTO.setId(Integer.parseInt(nodeList.item(i).getFirstChild().getTextContent()));
-            //----====PRIDAT KATEGORIU====----
-            mediumDTO.setCategory(null);
+            Node table = findTableParent(item);
+            if (table != null) {
+                mediumDTO.setCategory(CategoryManagerImpl.convertNodeToCategory(table));
+            }
+
+            collection.add(mediumDTO);
         }
         return collection;
+    }
+
+    private Node findTableParent(Node item) {
+        while (item != null && !item.getNodeName().equals("table:table")) {
+            item = item.getParentNode();
+        }
+
+        if (item == null) {
+            return null;
+        }
+
+        return item;
     }
 
     private int getNewMediumId(MediumDTO m) throws XPathExpressionException {

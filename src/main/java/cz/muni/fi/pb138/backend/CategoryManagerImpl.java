@@ -130,7 +130,7 @@ public class CategoryManagerImpl implements CategoryManager {
         return result;
     }
 
-    private CategoryDTO convertNodeToCategory(Node item) {
+    public static CategoryDTO convertNodeToCategory(Node item) {
         CategoryDTO categoryDTO = new CategoryDTO();
         categoryDTO.setName(getCategoryNameFromIndex(item));
         categoryDTO.setColumns(getColumnsFromNode(item));
@@ -138,7 +138,7 @@ public class CategoryManagerImpl implements CategoryManager {
         return categoryDTO;
     }
 
-    private List<String> getColumnsFromNode(Node item) {
+    private static List<String> getColumnsFromNode(Node item) {
         List<String> result = new ArrayList<>();
 
         NodeList cells = null;
@@ -159,7 +159,7 @@ public class CategoryManagerImpl implements CategoryManager {
         return result;
     }
 
-    private String getCategoryNameFromIndex(Node item) {
+    private static String getCategoryNameFromIndex(Node item) {
         Node attributeNode = item.getAttributes().getNamedItem("table:name");
         return attributeNode.getNodeValue();
     }
