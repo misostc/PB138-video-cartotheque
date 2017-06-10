@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://docbook.org/xml/5.0/rng/docbook.rng" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<?xml-model href="http://docbook.org/xml/5.0/rng/docbook.rng" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<article xmlns="http://docbook.org/ns/docbook"
+    xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
+    <info>
+        <title>PB138 - Záverečná zpráva k projektu</title>
+        <subtitle>Desktopová aplikace pro správu domácí videotéky v Javě</subtitle>
+        <author>
+            <personname>Roman Gluszny</personname>
+            <email>422473@mail.muni.cz</email>
+        </author>
+    </info>
+    
+    <sect1>
+        <title>Úvod</title>
+        <para>
+            Obsahem tohoto dokumentu je popis mnou odvedené práce na semestrálním projektu předmětu PB138 - Moderní značkovací jazyky.
+            Tématem naší práce bylo vytvoření desktopové aplikace v programocacím jazyce Java, který umožňuje správu domácí videotéty
+            prostřednictvím souboru ve formátu ODS.
+        </para>
+    </sect1>
+
+     
+    <sect1>
+        <title>
+            Návrh uživatelského rozhraní
+        </title>
+        <para> Zaměřil jsem se na okna obsahující formuláře potřebné pro jednotlivé funkce
+            kartotéky. Návrh byl proveden pommocí online nástroje <emphasis>draw.io</emphasis> na
+            základě náčrtku kolegy Michala Bábela. Konkrétně jde o formuláře pro vytvoření nové
+            kategorie, vytvoření a editaci média a dialogové okno pro přesun média mezi kategoriemi.
+            Byť bylo z důvodu implementačních požadavků potřeba některé návrhy pozměnit, jejich
+            charakter zůstal zachován. </para>
+        <para>
+            Okno pro vytvoření nové kategori se skládá z textového pole pro jméno kategorie 
+            a seznamu položek, které kategotie obsahuje.
+            <figure>
+                <title>Create category</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="png/create-category-window.png"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
+        </para>
+        
+        <para>
+            Okno pro vytvoření nového media bylo navrženo podobně jako formulář pro práci s kategorií, avšak 
+            programátor tento koncept pozměnil, aby mohl sloužit stejnému účelu i v případě editace již existujícího média.
+            <figure>
+                <title>Create medium</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="png/create-medium-window.png"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
+        </para>
+        
+        <para>
+            Dialogové okno pro přesun média mezi kategoriemi složí pro zobrazení provedených změn včetně přejmenování sloupců. 
+            Uživatel je upozorněn, že při přesunu může dojít ke ztrátě dat a je dotázán, zda si změnu skutečně přeje.
+            <figure>
+                <title>Move medium</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="png/move-media-window.png"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
+        </para>
+    </sect1>
+    
+    <sect1>
+        <title>Zpracování uživatelského rozhraní</title>
+        <para> Tvorba jednotlivých prvků uživatelského rozhraní probíhala v programu Scene Builder,
+            samotná implementace frontendu pak v IDE InteliJ Idea za pomocí platformy JavaFX. Když
+            uživatel v hlavním menu kline na tlačítko <emphasis>Create category</emphasis>, třída
+            zodpovědná za navigaci v tomto menu vytvoří dialogovou třídu
+                <emphasis>CategoryDialog</emphasis>. Zde načte FXMLLoader formulář vytvořený ve
+            Scene Builderu ze kterého si také vytáhne všechny potřebné elementy.</para>
+        <para>Validní kategorie musí obsahovat jméno, konkretně textový řetězec bez bílých znaků, a
+            alespoň jeden sloupec. Jestliže nejsou všechny tyto podmínky splněny, objeví se okno s
+            požadavky a kategorie nebude vytvořena. Nově vytvořená kategorie získá ID v závisloti na
+            počtu již existujích kategorií.</para>
+        <para>Pro vložení nového sloupce stačí vyplnit textové pole pod seznamem a kliknout na
+            tlačítko se znakem plus. Horní počet sloupců není nijak omezen. Jestliže si uživatel
+            přeje položku smazat, stačí na ji v seznamu označit levým klinutí s zmáčknout klávesu
+            delete. Vyvolání této udáslosti způsobí odstranění sloupce ze seznamu.</para>
+    </sect1>
+    
+    <sect1>
+        <title>Vytvoření UML diagramů</title>
+        <para> Pro potřeby projektu byly vytvořeny dva UML diagramy, popisující požadavky a
+            fungování aplikace. Jsou to: <itemizedlist>
+                <listitem>
+                    <para>Use-case diagram</para>
+                </listitem>
+                <listitem>
+                    <para>Class diagram</para>
+                </listitem>
+            </itemizedlist></para>
+        <sect2>
+            <title>Use-case diagram</title>
+            <para> Diagram případu užití přímo vychází ze zadání. Jediným aktérem v systému je
+                samotný uživatel, který dále manipuluje s položkami ve videotéce. Uživatel může
+                provádět následující operace: <itemizedlist>
+                    <listitem>
+                        <para>Přidání/odebrání média do/z videotéky</para>
+                    </listitem>
+                    <listitem>
+                        <para>Editace existujícího média</para>
+                    </listitem>
+                    <listitem>
+                        <para>Vyhledání média podle filmu (nebo jiné položky média)</para>
+                    </listitem>
+                    <listitem>
+                        <para>Přidání/odebrání kategorie do/z videotéky</para>
+                    </listitem>
+                    <listitem>
+                        <para>Výpis médií v dané kategori včetně položek, které jsou na nich
+                            obsaženy</para>
+                    </listitem>
+                    <listitem>
+                        <para>Přesun média do jiné kategorie</para>
+                    </listitem>
+                </itemizedlist></para>
+        </sect2>
+        
+        <sect2>
+            <title>Class diagram</title>
+            <para> Diagram tříd obsahuje všechny třídy definované a dokumentované v rané fázi
+                projektu. Při implemetaci však vyplunulo na povrch několik nesrovnalostí a později
+                tak bylo potřeba diagram přepracovat, aby odpovídal skutečné struktuře programu.
+                Příkladem může být úplné odstranění třídy ColumnDTO, nebo vývojáři shledali, že pole
+                typu string je pro uchovávání hodnot zcela postačující.</para>
+        </sect2>
+        
+        
+    </sect1>
+</article>
