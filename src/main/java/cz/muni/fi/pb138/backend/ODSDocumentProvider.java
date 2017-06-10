@@ -109,8 +109,11 @@ public class ODSDocumentProvider implements DocumentProvider {
     }
 
     private void restoreTempFile() {
-        new File(this.filename).delete();
-        new File(this.filename + ".tmp").renameTo(new File(this.filename));
+        boolean deleted = new File(this.filename).delete();
+        boolean renamed = deleted && new File(this.filename + ".tmp").renameTo(new File(this.filename));
+        if (!renamed) {
+            throw new DocumentNotSavedException("Could not access file.");
+        }
     }
 
     private void constructContentXMLFile(ZipOutputStream newZipFileOS) throws IOException, TransformerException {
