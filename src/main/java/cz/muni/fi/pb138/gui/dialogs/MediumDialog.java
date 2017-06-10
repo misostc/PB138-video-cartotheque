@@ -6,6 +6,7 @@ import cz.muni.fi.pb138.entity.MediumDTO;
 import cz.muni.fi.pb138.gui.view.CategoryListCellFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.transformation.FilteredList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -53,6 +54,19 @@ public class MediumDialog extends Dialog<MediumDTO> {
         okButton.setDisable(true);
         initStyle(StageStyle.DECORATED);
 
+        okButton.addEventFilter(
+                ActionEvent.ACTION,
+                event -> {
+
+                    if (validateMedium() == null) {
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setHeaderText("You need to fill at least one column!");
+                        alert.showAndWait();
+                        event.consume();
+                    }
+                }
+        );
+
         try {
             loader.load();
         } catch (IOException e) {
@@ -69,7 +83,13 @@ public class MediumDialog extends Dialog<MediumDTO> {
         mediumDTO = new MediumDTO();
         mediumDTO.setCategory(selectedCategory);
         mediumDTO.setValues(constructValues(selectedCategory));
-        return mediumDTO;
+        if (mediumDTO.isValid())
+        {
+            return mediumDTO;
+        }
+        else {
+            return null;
+        }
     }
 
     private List<String> constructValues(CategoryDTO selectedCategory) {

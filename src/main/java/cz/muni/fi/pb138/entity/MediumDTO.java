@@ -31,4 +31,13 @@ public class MediumDTO {
     public void setValues(List<String> values) {
         this.values = values;
     }
+
+    public boolean isValid() {
+        for (String s : values) {
+            if (s != null) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
