@@ -45,30 +45,24 @@ public class CategoryManagerImpl implements CategoryManager {
     }
 
     private Node createNodeFromCategory(CategoryDTO c) {
-        Element tableName = documentProvider.getDocument().createElement("table:table");
-        Element row = documentProvider.getDocument().createElement("table:table-row");
+        Element tableName = documentProvider.getDocument().createElementNS(ODSXpathUtils.TABLE_NAMESPACE, "table:table");
+        Element row = documentProvider.getDocument().createElementNS(ODSXpathUtils.TABLE_NAMESPACE, "table:table-row");
 
         List<String> columns = c.getColumns();
         for (int i = 0; i < columns.size(); i++) {
-            Element cell = documentProvider.getDocument().createElement("table:table-cell");
-            assignAttributeNS(cell, "calcext:value-type", "urn:org:documentfoundation:names:experimental:calc:xmlns:calcext:1.0", "string");
-            assignAttributeNS(cell, "office:value-type", "urn:oasis:names:tc:opendocument:xmlns:office:1.0", "string");
-            Element p = documentProvider.getDocument().createElement("text:p");
+            Element cell = documentProvider.getDocument().createElementNS(ODSXpathUtils.TABLE_NAMESPACE, "table:table-cell");
+            assignAttributeNS(cell, "calcext:value-type", ODSXpathUtils.CALCEXT_NAMESPACE, "string");
+            assignAttributeNS(cell, "office:value-type", ODSXpathUtils.OFFICE_NAMESPACE, "string");
+            Element p = documentProvider.getDocument().createElementNS(ODSXpathUtils.TEXT_NAMESPACE,"text:p");
             p.setTextContent(columns.get(i));
             cell.appendChild(p);
             row.appendChild(cell);
         }
         tableName.appendChild(row);
 
-        assignAttribute(tableName, "table:name", c.getName());
+        assignAttributeNS(tableName, "table:name", ODSXpathUtils.TABLE_NAMESPACE, c.getName());
 
         return tableName;
-    }
-
-    private void assignAttribute(Element element, String attributeName, String value) {
-        Attr attribute = documentProvider.getDocument().createAttribute(attributeName);
-        attribute.setValue(value);
-        element.setAttributeNode(attribute);
     }
 
     private void assignAttributeNS(Element element, String attributeName, String namespaceURI, String value) {

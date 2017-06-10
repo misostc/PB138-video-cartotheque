@@ -77,6 +77,7 @@ public class MainWindowController {
     private void updateCategoriesList() {
         ObservableList<CategoryDTO> categoryDTOS = FXCollections.observableArrayList(categoryManager.getCategories());
         categoriesList.setCellFactory(new CategoryListCellFactory());
+        categoriesList.getItems().clear();
         categoriesList.setItems(categoryDTOS);
         categoriesList.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
             updateMediumList(newValue);

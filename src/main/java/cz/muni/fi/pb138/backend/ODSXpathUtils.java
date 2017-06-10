@@ -22,8 +22,10 @@ import static javax.xml.xpath.XPathConstants.NUMBER;
  * used for querying ODS documents.
  */
 public class ODSXpathUtils {
-    private static final String TABLE_NAMESPACE = "urn:oasis:names:tc:opendocument:xmlns:table:1.0";
-    private static final String TEXT_NAMESPACE = "urn:oasis:names:tc:opendocument:xmlns:text:1.0";
+    public static final String TABLE_NAMESPACE = "urn:oasis:names:tc:opendocument:xmlns:table:1.0";
+    public static final String TEXT_NAMESPACE = "urn:oasis:names:tc:opendocument:xmlns:text:1.0";
+    public static final String CALCEXT_NAMESPACE = "urn:org:documentfoundation:names:experimental:calc:xmlns:calcext:1.0";
+    public static final String OFFICE_NAMESPACE = "urn:oasis:names:tc:opendocument:xmlns:office:1.0";
 
     static XPath getxPath() {
         XPath xPath = XPathFactory.newInstance().newXPath();

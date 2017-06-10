@@ -28,8 +28,8 @@ public class MediumManagerImpl implements MediumManager {
     public void addMedium(MediumDTO m) {
         Node nodeCategory;
         try {
-            nodeCategory = locateCategoryNode(m);
             int id = getNewMediumId(m);
+            nodeCategory = locateCategoryNode(m);
             m.setId(id);
         } catch (XPathExpressionException e) {
             throw new MediumNotPersistedException(e);
