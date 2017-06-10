@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class MediumManagerImpl implements MediumManager {
 
-    private DocumentProvider documentProvider;
+    private final DocumentProvider documentProvider;
 
     public MediumManagerImpl(DocumentProvider documentProvider) {
         this.documentProvider = documentProvider;
@@ -75,11 +75,10 @@ public class MediumManagerImpl implements MediumManager {
     }
 
     private Node findFirstMediumInCategory(CategoryDTO categoryDTO) throws XPathExpressionException {
-        Node node = ODSXpathUtils.evaluateXpathNode(
+        return ODSXpathUtils.evaluateXpathNode(
                 documentProvider,
                 String.format("//table:table[%d]/table:table-row[2]", categoryDTO.getId() + 1)
         );
-        return node;
     }
 
 
@@ -92,17 +91,16 @@ public class MediumManagerImpl implements MediumManager {
             throw new IllegalArgumentException("medium does not have id");
         }
 
-        Node node = null;
         try {
-            node = ODSXpathUtils.evaluateXpathNode(
+            Node node = ODSXpathUtils.evaluateXpathNode(
                     documentProvider,
                     String.format("//table:table[%d]/table:table-row[%d]", medium.getCategory().getId() + 1, medium.getId() + 1)
             );
+            node.getParentNode().removeChild(node);
         } catch (XPathExpressionException e) {
             throw new MediumNotRemovedException(e);
         }
 
-        node.getParentNode().removeChild(node);
     }
 
     @Override
@@ -161,7 +159,7 @@ public class MediumManagerImpl implements MediumManager {
         }
 
         List<MediumDTO> collection = new ArrayList<>();
-        NodeList nodeList = null;
+        NodeList nodeList;
         try {
             nodeList = ODSXpathUtils.evaluateXpathNodeList(
                     documentProvider,
@@ -202,7 +200,7 @@ public class MediumManagerImpl implements MediumManager {
         return item;
     }
 
-    private int getNewMediumId(MediumDTO m) throws XPathExpressionException, MediaNotAvailableException {
+    private int getNewMediumId(MediumDTO m) throws MediaNotAvailableException {
         return findMediumByCategory(m.getCategory()).size() + 1;
     }
 

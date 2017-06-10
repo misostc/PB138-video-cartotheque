@@ -3,6 +3,7 @@ package cz.muni.fi.pb138.gui.dialogs;
 import cz.muni.fi.pb138.backend.CategoryManager;
 import cz.muni.fi.pb138.entity.CategoryDTO;
 import cz.muni.fi.pb138.entity.MediumDTO;
+import cz.muni.fi.pb138.exceptions.CategoriesNotAvailableException;
 import cz.muni.fi.pb138.gui.view.CategoryListCellFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.transformation.FilteredList;
@@ -17,6 +18,7 @@ import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -25,12 +27,14 @@ import java.util.List;
 public class MediumDialog extends Dialog<MediumDTO> {
     private final Button okButton;
     @FXML
+    private
     GridPane valuesGridPane;
     @FXML
+    private
     ComboBox<CategoryDTO> categoryComboBox;
-    private CategoryManager categoryManager;
+    private final CategoryManager categoryManager;
     private MediumDTO mediumDTO;
-    private String[] values = new String[100];
+    private final String[] values = new String[100];
 
     public MediumDialog(CategoryManager categoryManager, MediumDTO mediumDTO) {
         super();
@@ -91,9 +95,7 @@ public class MediumDialog extends Dialog<MediumDTO> {
 
     private List<String> constructValues(CategoryDTO selectedCategory) {
         List<String> result = new ArrayList<>();
-        for (int i = 0; i < selectedCategory.getColumns().size(); i++) {
-            result.add(values[i]);
-        }
+        result.addAll(Arrays.asList(values).subList(0, selectedCategory.getColumns().size()));
         return result;
     }
 
@@ -128,9 +130,7 @@ public class MediumDialog extends Dialog<MediumDTO> {
             TextField field = new TextField();
             field.setId(Integer.toString(rowIndex));
             final int id = rowIndex;
-            field.textProperty().addListener((observable, oldValue, newValue) -> {
-                values[id] = newValue;
-            });
+            field.textProperty().addListener((observable, oldValue, newValue) -> values[id] = newValue);
             valuesGridPane.add(field, 1, rowIndex);
             rowIndex++;
         }
@@ -153,13 +153,22 @@ public class MediumDialog extends Dialog<MediumDTO> {
     }
 
     private void updateCategoryComboBox(CategoryDTO category) {
-        categoryComboBox.setItems(FXCollections.observableArrayList(categoryManager.getCategories()));
-        categoryComboBox.setPlaceholder(new TextField("Select Category"));
-        categoryComboBox.setCellFactory(new CategoryListCellFactory());
-        categoryComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> updateValuesGrid(newValue));
-        if (category != null) {
-            categoryComboBox.getSelectionModel().select(category);
+        try {
+            categoryComboBox.setItems(FXCollections.observableArrayList(categoryManager.getCategories()));
+            categoryComboBox.setPlaceholder(new TextField("Select Category"));
+            categoryComboBox.setCellFactory(new CategoryListCellFactory());
+            categoryComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> updateValuesGrid(newValue));
+            if (category != null) {
+                categoryComboBox.getSelectionModel().select(category);
+            }
+        } catch (CategoriesNotAvailableException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("An Error occurred.");
+            alert.setHeaderText("There was a problem loading a list of categories.");
+            alert.showAndWait();
+            close();
         }
+
     }
 
 }

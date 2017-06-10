@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MediumDTO {
-    CategoryDTO category;
-    List<String> values = new ArrayList<>();
-    Integer id;
+    private CategoryDTO category;
+    private List<String> values = new ArrayList<>();
+    private Integer id;
 
     public Integer getId() {
         return id;

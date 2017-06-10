@@ -3,9 +3,9 @@ package cz.muni.fi.pb138.entity;
 import java.util.List;
 
 public class CategoryDTO {
-    Integer id;
-    String name;
-    List<String> columns;
+    private Integer id;
+    private String name;
+    private List<String> columns;
 
     public Integer getId() {
         return id;
