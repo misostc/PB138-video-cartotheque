@@ -2,7 +2,6 @@ package cz.muni.fi.pb138.gui.dialogs;
 
 import cz.muni.fi.pb138.backend.CategoryManager;
 import cz.muni.fi.pb138.entity.CategoryDTO;
-import cz.muni.fi.pb138.entity.ColumnDTO;
 import cz.muni.fi.pb138.entity.MediumDTO;
 import cz.muni.fi.pb138.gui.view.CategoryListCellFactory;
 import javafx.collections.FXCollections;
@@ -18,7 +17,7 @@ import javafx.stage.StageStyle;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by micha on 06.06.2017.
@@ -97,10 +96,10 @@ public class MediumDialog extends Dialog<MediumDTO> {
             return;
         }
 
-        Collection<ColumnDTO> columns = category.getColumns();
+        List<String> columns = category.getColumns();
         int rowIndex = 0;
-        for (ColumnDTO columnDTO : columns) {
-            valuesGridPane.add(new Label(columnDTO.getName()), 0, rowIndex);
+        for (String columnDTO : columns) {
+            valuesGridPane.add(new Label(columnDTO), 0, rowIndex);
             TextField field = new TextField();
             field.setId(Integer.toString(rowIndex));
             final int id = rowIndex;

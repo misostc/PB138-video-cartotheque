@@ -1,11 +1,11 @@
 package cz.muni.fi.pb138.entity;
 
-import java.util.Collection;
+import java.util.List;
 
 public class CategoryDTO {
     String id;
     String name;
-    Collection<ColumnDTO> columns;
+    List<String> columns;
 
     public String getId() {
         return id;
@@ -23,18 +23,18 @@ public class CategoryDTO {
         this.name = name;
     }
 
-    public Collection<ColumnDTO> getColumns() {
+    public List<String> getColumns() {
         return columns;
     }
 
-    public void setColumns(Collection<ColumnDTO> columns) {
+    public void setColumns(List<String> columns) {
         this.columns = columns;
     }
 
     public String toString() {
         String output = id + " " + name + " columns:";
-        for (ColumnDTO item : columns) {
-            output = output + " " + item.getName();
+        for (String item : columns) {
+            output = output + " " + item;
         }
         return output;
     }

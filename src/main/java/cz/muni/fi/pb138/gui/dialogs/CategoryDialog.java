@@ -2,8 +2,6 @@ package cz.muni.fi.pb138.gui.dialogs;
 
 import cz.muni.fi.pb138.backend.CategoryManager;
 import cz.muni.fi.pb138.entity.CategoryDTO;
-import cz.muni.fi.pb138.entity.ColumnDTO;
-import cz.muni.fi.pb138.entity.MediumDTO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,24 +14,21 @@ import javafx.stage.StageStyle;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Created by micha on 06.06.2017.
  */
 public class CategoryDialog extends Dialog<CategoryDTO> {
-    private CategoryManager categoryManager;
-    private CategoryDTO categoryDTO;
-
+    private final Button okButton;
+    private final Button cancelButton;
     @FXML
     public ListView categoryListView;
     @FXML
     public TextField newColumnField;
     @FXML
     public TextField categoryNameField;
-
-    private final Button okButton;
-    private final Button cancelButton;
+    private CategoryManager categoryManager;
+    private CategoryDTO categoryDTO;
 
     public CategoryDialog(CategoryManager categoryManager, CategoryDTO categoryDTO) {
         super();
@@ -61,7 +56,7 @@ public class CategoryDialog extends Dialog<CategoryDTO> {
         okButton.addEventFilter(
                 ActionEvent.ACTION,
                 event -> {
-                    if (createCategory()==null) {
+                    if (createCategory() == null) {
                         Alert alert = new Alert(Alert.AlertType.WARNING);
                         alert.setHeaderText("You need to fill name and at least one column!");
                         alert.showAndWait();
@@ -69,7 +64,6 @@ public class CategoryDialog extends Dialog<CategoryDTO> {
                     }
                 }
         );
-
 
 
         System.out.println("editing");
@@ -102,24 +96,14 @@ public class CategoryDialog extends Dialog<CategoryDTO> {
 
         categoryDTO = new CategoryDTO();
         //todo generate unique ID
-        categoryDTO.setId(Integer.toString(categoryManager.getCategories().size()+1));
+        categoryDTO.setId(Integer.toString(categoryManager.getCategories().size() + 1));
         categoryDTO.setName(categoryNameField.getText());
-
-        List<ColumnDTO> columnList = new ArrayList<>();
-        List<String> valuesList = categoryListView.getItems();
-        for (String item : valuesList) {
-            ColumnDTO tmp = new ColumnDTO();
-            tmp.setId(Integer.toString(columnList.size() + 1));
-            tmp.setName(item);
-            columnList.add(tmp);
-        }
-
+        List<String> columnList = new ArrayList<String>(categoryListView.getItems());
         categoryDTO.setColumns(columnList);
 
         if (categoryDTO.isValid())
             return categoryDTO;
-        else
-        {
+        else {
             return null;
         }
 
