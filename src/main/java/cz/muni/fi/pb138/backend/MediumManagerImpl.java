@@ -36,16 +36,16 @@ public class MediumManagerImpl implements MediumManager {
         }
 
         //table-row
-        Node nodeNewRow = documentProvider.getDocument().createElement("table:table-row");
+        Node nodeNewRow = documentProvider.getDocument().createElementNS(ODSXpathUtils.TABLE_NAMESPACE, "table:table-row");
 
         //table-cell value strings
         for (int i = 0; i < m.getValues().size(); i++) {
-            Node nodeNewValue = documentProvider.getDocument().createElement("table:table-cell");
-            ((Element) nodeNewValue).setAttribute("table:style-name", "ce3");
-            ((Element) nodeNewValue).setAttribute("office:value-type", "string");
-            ((Element) nodeNewValue).setAttribute("calcext:value-type", "string");
-            Node newValueText = documentProvider.getDocument().createElement("text:p");
-            newValueText.setNodeValue(m.getValues().get(i));
+            Node nodeNewValue = documentProvider.getDocument().createElementNS(ODSXpathUtils.TABLE_NAMESPACE, "table:table-cell");
+            ((Element) nodeNewValue).setAttributeNS(ODSXpathUtils.TABLE_NAMESPACE,"table:style-name", "ce3");
+            ((Element) nodeNewValue).setAttributeNS(ODSXpathUtils.OFFICE_NAMESPACE,"office:value-type", "string");
+            ((Element) nodeNewValue).setAttributeNS(ODSXpathUtils.CALCEXT_NAMESPACE,"calcext:value-type", "string");
+            Node newValueText = documentProvider.getDocument().createElementNS(ODSXpathUtils.TEXT_NAMESPACE, "text:p");
+            newValueText.setTextContent(m.getValues().get(i));
             nodeNewValue.appendChild(newValueText);
             nodeNewRow.appendChild(nodeNewValue);
         }
@@ -66,7 +66,7 @@ public class MediumManagerImpl implements MediumManager {
     private Node findFirstMediumInCategory(CategoryDTO categoryDTO) throws XPathExpressionException {
         Node node = ODSXpathUtils.evaluateXpathNode(
                 documentProvider,
-                String.format("//table:table[%d]/table:table-row[.//text:p]", categoryDTO.getId() + 1)
+                String.format("//table:table[%d]/table:table-row[2]", categoryDTO.getId() + 1)
         );
         return node;
     }
