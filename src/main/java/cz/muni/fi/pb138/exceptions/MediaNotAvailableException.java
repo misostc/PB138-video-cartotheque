@@ -1,6 +1,6 @@
 package cz.muni.fi.pb138.exceptions;
 
-public class MediaNotAvailableException extends RuntimeException {
+public class MediaNotAvailableException extends Exception {
     public MediaNotAvailableException() {
     }
 

@@ -96,12 +96,10 @@ public class CategoryDialog extends Dialog<CategoryDTO> {
         List<String> columnList = new ArrayList<String>(categoryListView.getItems());
         categoryDTO.setColumns(columnList);
 
-        if (categoryDTO.isValid())
-        {
-            categoryListView.getItems().add(0,"Id");
+        if (categoryDTO.isValid()) {
+            categoryListView.getItems().add(0, "Id");
             return categoryDTO;
-        }
-        else {
+        } else {
             return null;
         }
 

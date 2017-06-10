@@ -4,6 +4,7 @@ import cz.muni.fi.pb138.entity.CategoryDTO;
 import cz.muni.fi.pb138.entity.MediumDTO;
 import cz.muni.fi.pb138.exceptions.MediaNotAvailableException;
 import cz.muni.fi.pb138.exceptions.MediumNotPersistedException;
+import cz.muni.fi.pb138.exceptions.MediumNotRemovedException;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -25,13 +26,20 @@ public class MediumManagerImpl implements MediumManager {
     }
 
     @Override
-    public void addMedium(MediumDTO m) {
+    public void addMedium(MediumDTO medium) throws MediumNotPersistedException {
+        if (medium == null) {
+            throw new IllegalArgumentException("medium is null");
+        }
+        if (medium.getId() != null) {
+            throw new IllegalArgumentException("medium already has id");
+        }
+
         Node nodeCategory;
         try {
-            int id = getNewMediumId(m);
-            nodeCategory = locateCategoryNode(m);
-            m.setId(id);
-        } catch (XPathExpressionException e) {
+            int id = getNewMediumId(medium);
+            nodeCategory = locateCategoryNode(medium);
+            medium.setId(id);
+        } catch (XPathExpressionException | MediaNotAvailableException e) {
             throw new MediumNotPersistedException(e);
         }
 
@@ -39,13 +47,13 @@ public class MediumManagerImpl implements MediumManager {
         Node nodeNewRow = documentProvider.getDocument().createElementNS(ODSXpathUtils.TABLE_NAMESPACE, "table:table-row");
 
         //table-cell value strings
-        for (String value: m.getValues()) {
+        for (String value : medium.getValues()) {
             Node nodeNewValue = documentProvider.getDocument().createElementNS(ODSXpathUtils.TABLE_NAMESPACE, "table:table-cell");
 
             if (value != null && !value.trim().isEmpty()) {
                 Node newValueText = documentProvider.getDocument().createElementNS(ODSXpathUtils.TEXT_NAMESPACE, "text:p");
-                ((Element) nodeNewValue).setAttributeNS(ODSXpathUtils.OFFICE_NAMESPACE,"office:value-type", "string");
-                ((Element) nodeNewValue).setAttributeNS(ODSXpathUtils.CALCEXT_NAMESPACE,"calcext:value-type", "string");
+                ((Element) nodeNewValue).setAttributeNS(ODSXpathUtils.OFFICE_NAMESPACE, "office:value-type", "string");
+                ((Element) nodeNewValue).setAttributeNS(ODSXpathUtils.CALCEXT_NAMESPACE, "calcext:value-type", "string");
                 newValueText.setTextContent(value);
                 nodeNewValue.appendChild(newValueText);
             }
@@ -55,7 +63,7 @@ public class MediumManagerImpl implements MediumManager {
 
         Node firstChild;
         try {
-            firstChild = findFirstMediumInCategory(m.getCategory());
+            firstChild = findFirstMediumInCategory(medium.getCategory());
         } catch (XPathExpressionException e) {
             throw new MediumNotPersistedException(e);
         }
@@ -76,22 +84,36 @@ public class MediumManagerImpl implements MediumManager {
 
 
     @Override
-    public void removeMedium(MediumDTO m) {
+    public void removeMedium(MediumDTO medium) throws MediumNotRemovedException {
+        if (medium == null) {
+            throw new IllegalArgumentException("medium is null");
+        }
+        if (medium.getId() == null) {
+            throw new IllegalArgumentException("medium does not have id");
+        }
+
         Node node = null;
         try {
             node = ODSXpathUtils.evaluateXpathNode(
                     documentProvider,
-                    String.format("//table:table[%d]/table:table-row[%d]", m.getCategory().getId() + 1, m.getId() + 1)
+                    String.format("//table:table[%d]/table:table-row[%d]", medium.getCategory().getId() + 1, medium.getId() + 1)
             );
         } catch (XPathExpressionException e) {
-            throw new MediumNotPersistedException(e);
+            throw new MediumNotRemovedException(e);
         }
 
         node.getParentNode().removeChild(node);
     }
 
     @Override
-    public Collection<MediumDTO> findMediumByCategory(CategoryDTO category) {
+    public Collection<MediumDTO> findMediumByCategory(CategoryDTO category) throws MediaNotAvailableException {
+
+        if (category == null) {
+            throw new IllegalArgumentException("category is null");
+        }
+        if (category.getId() == null) {
+            throw new IllegalArgumentException("category does not have id");
+        }
         if (!category.isValid()) {
             throw new IllegalArgumentException("Invalid category");
         }
@@ -133,16 +155,20 @@ public class MediumManagerImpl implements MediumManager {
     }
 
     @Override
-    public Collection<MediumDTO> findMediumByValue(String value) {
+    public Collection<MediumDTO> findMediumByValue(String value) throws MediaNotAvailableException {
+        if (value == null) {
+            throw new IllegalArgumentException("value is null");
+        }
+
         List<MediumDTO> collection = new ArrayList<>();
         NodeList nodeList = null;
         try {
             nodeList = ODSXpathUtils.evaluateXpathNodeList(
                     documentProvider,
-                    String.format("//text:p[text()[contains(.,'%s')]]/../..",value)
+                    String.format("//text:p[text()[contains(.,'%s')]]/../..", value)
             );
         } catch (XPathExpressionException e) {
-            throw new MediumNotPersistedException(e);
+            throw new MediaNotAvailableException(e);
         }
 
         //iterate through media
@@ -176,7 +202,7 @@ public class MediumManagerImpl implements MediumManager {
         return item;
     }
 
-    private int getNewMediumId(MediumDTO m) throws XPathExpressionException {
+    private int getNewMediumId(MediumDTO m) throws XPathExpressionException, MediaNotAvailableException {
         return findMediumByCategory(m.getCategory()).size() + 1;
     }
 

@@ -1,6 +1,6 @@
 package cz.muni.fi.pb138.exceptions;
 
-public class MediumNotRemovedException extends RuntimeException {
+public class MediumNotRemovedException extends Exception {
     public MediumNotRemovedException() {
     }
 

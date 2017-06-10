@@ -1,30 +1,27 @@
 package cz.muni.fi.pb138.exceptions;
 
-import cz.muni.fi.pb138.backend.DocumentProvider;
-import org.w3c.dom.Document;
-
 /**
  * Created by Michal.Babel on 01-Jun-17.
  */
-public class DocumentNotValidException implements DocumentProvider {
+public class DocumentNotValidException extends Exception {
 
-    /**
-     * Creates document provider from ODS file
-     *
-     * @param filename ods file to locate.
-     * @throws DocumentNotValidException when document is not a proper file.
-     */
-    public DocumentNotValidException(String filename) {
-
+    public DocumentNotValidException() {
+        super();
     }
 
-    @Override
-    public Document getDocument() {
-        return null;
+    public DocumentNotValidException(String message) {
+        super(message);
     }
 
-    @Override
-    public void save() {
+    public DocumentNotValidException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
+    public DocumentNotValidException(Throwable cause) {
+        super(cause);
+    }
+
+    protected DocumentNotValidException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
     }
 }

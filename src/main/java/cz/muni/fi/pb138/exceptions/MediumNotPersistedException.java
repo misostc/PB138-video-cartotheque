@@ -1,6 +1,6 @@
 package cz.muni.fi.pb138.exceptions;
 
-public class MediumNotPersistedException extends RuntimeException {
+public class MediumNotPersistedException extends Exception {
     public MediumNotPersistedException() {
     }
 

@@ -1,6 +1,6 @@
 package cz.muni.fi.pb138.exceptions;
 
-public class DocumentNotSavedException extends RuntimeException {
+public class DocumentNotSavedException extends Exception {
     public DocumentNotSavedException() {
     }
 

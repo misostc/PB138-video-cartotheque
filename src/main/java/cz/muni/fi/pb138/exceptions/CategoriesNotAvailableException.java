@@ -1,6 +1,6 @@
 package cz.muni.fi.pb138.exceptions;
 
-public class CategoriesNotAvailableException extends RuntimeException {
+public class CategoriesNotAvailableException extends Exception {
     public CategoriesNotAvailableException() {
     }
 

@@ -1,6 +1,6 @@
 package cz.muni.fi.pb138.exceptions;
 
-public class CategoryNotPersistedException extends RuntimeException {
+public class CategoryNotPersistedException extends Exception {
     public CategoryNotPersistedException() {
     }
 

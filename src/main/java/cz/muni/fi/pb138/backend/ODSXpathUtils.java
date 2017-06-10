@@ -4,18 +4,12 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import javax.xml.namespace.NamespaceContext;
-import javax.xml.namespace.QName;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-import javax.xml.xpath.XPathVariableResolver;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 
-import static javax.xml.xpath.XPathConstants.NODE;
-import static javax.xml.xpath.XPathConstants.NODESET;
-import static javax.xml.xpath.XPathConstants.NUMBER;
+import static javax.xml.xpath.XPathConstants.*;
 
 /**
  * Class useful for Xpath-related functions on ODS documents, defines namespace prefixes
@@ -57,16 +51,16 @@ public class ODSXpathUtils {
 
     static NodeList evaluateXpathNodeList(DocumentProvider documentProvider, String xpathString) throws XPathExpressionException {
         XPath xPath = getxPath();
-        return (NodeList) xPath.compile(xpathString).evaluate(documentProvider.getDocument(),NODESET);
+        return (NodeList) xPath.compile(xpathString).evaluate(documentProvider.getDocument(), NODESET);
     }
 
     static Node evaluateXpathNode(DocumentProvider documentProvider, String xpathString) throws XPathExpressionException {
         XPath xPath = getxPath();
-        return (Node) xPath.compile(xpathString).evaluate(documentProvider.getDocument(),NODE);
+        return (Node) xPath.compile(xpathString).evaluate(documentProvider.getDocument(), NODE);
     }
 
     static int evaluateXpathInt(DocumentProvider documentProvider, String xpathString) throws XPathExpressionException {
         XPath xPath = getxPath();
-        return ((Double) xPath.compile(xpathString).evaluate(documentProvider.getDocument(),NUMBER)).intValue();
+        return ((Double) xPath.compile(xpathString).evaluate(documentProvider.getDocument(), NUMBER)).intValue();
     }
 }

@@ -3,6 +3,7 @@ package cz.muni.fi.pb138.gui.controllers;
 import cz.muni.fi.pb138.backend.*;
 import cz.muni.fi.pb138.entity.CategoryDTO;
 import cz.muni.fi.pb138.entity.MediumDTO;
+import cz.muni.fi.pb138.exceptions.*;
 import cz.muni.fi.pb138.gui.dialogs.CategoryDialog;
 import cz.muni.fi.pb138.gui.dialogs.MediumDialog;
 import cz.muni.fi.pb138.gui.dialogs.MediumSearchResultsPane;
@@ -78,16 +79,53 @@ public class MainWindowController {
     }
 
     private void updateCategoriesList() {
-        ObservableList<CategoryDTO> categoryDTOS = FXCollections.observableArrayList(categoryManager.getCategories());
-        categoriesList.setCellFactory(new CategoryListCellFactory());
-        categoriesList.getItems().clear();
-        categoriesList.setItems(categoryDTOS);
-        categoriesList.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
-            updateMediumList(newValue);
-        });
+        try {
+            ObservableList<CategoryDTO> categoryDTOS = FXCollections.observableArrayList(categoryManager.getCategories());
+            categoriesList.setCellFactory(new CategoryListCellFactory());
+            categoriesList.getItems().clear();
+            categoriesList.setItems(categoryDTOS);
+            categoriesList.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
+                updateMediumList(newValue);
+            });
 
-        ContextMenu cm = createCategoryContextMenu();
-        categoriesList.setContextMenu(cm);
+            ContextMenu cm = createCategoryContextMenu();
+            categoriesList.setContextMenu(cm);
+
+        } catch (CategoriesNotAvailableException e) {
+            createExceptionAlert(e);
+        }
+    }
+
+    private void createExceptionAlert(Exception e) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("An Error occured.");
+
+        if (e instanceof CategoriesNotAvailableException) {
+            alert.setHeaderText("There was a problem retrieving categories.");
+        }
+        if (e instanceof CategoryNotPersistedException) {
+            alert.setHeaderText("There was a problem saving the category.");
+        }
+        if (e instanceof CategoryNotRemovedException) {
+            alert.setHeaderText("There was a problem removing the category.");
+        }
+        if (e instanceof DocumentNotSavedException) {
+            alert.setHeaderText("There was a problem saving the file.");
+        }
+        if (e instanceof DocumentNotValidException) {
+            alert.setHeaderText("There was a problem opening the file.");
+        }
+        if (e instanceof MediaNotAvailableException) {
+            alert.setHeaderText("There was a problem retrieving media.");
+        }
+        if (e instanceof MediumNotPersistedException) {
+            alert.setHeaderText("There was a problem saving the medium.");
+        }
+        if (e instanceof MediumNotRemovedException) {
+            alert.setHeaderText("There was a problem removing the medium.");
+        }
+
+        alert.showAndWait();
     }
 
     private ContextMenu createCategoryContextMenu() {
@@ -110,7 +148,11 @@ public class MainWindowController {
         Optional<ButtonType> chosenButton = alert.showAndWait();
 
         if (chosenButton.isPresent() && chosenButton.get().equals(ButtonType.OK)) {
-            categoryManager.removeCategory(selectedItem);
+            try {
+                categoryManager.removeCategory(selectedItem);
+            } catch (CategoryNotRemovedException e) {
+                createExceptionAlert(e);
+            }
             dataUpdated();
         }
     }
@@ -120,22 +162,25 @@ public class MainWindowController {
             mediumsTable.getItems().clear();
             return;
         }
+        try {
+            Collection<MediumDTO> mediumDTOS = mediumManager.findMediumByCategory(newValue);
+            List<MediumViewModel> mediumViewModels = mediumDTOS.stream().map(MediumViewModel::new).collect(Collectors.toList());
+            mediumsTable.getItems().clear();
+            mediumsTable.setItems(FXCollections.observableList(mediumViewModels));
 
-        Collection<MediumDTO> mediumDTOS = mediumManager.findMediumByCategory(newValue);
-        List<MediumViewModel> mediumViewModels = mediumDTOS.stream().map(MediumViewModel::new).collect(Collectors.toList());
-        mediumsTable.getItems().clear();
-        mediumsTable.setItems(FXCollections.observableList(mediumViewModels));
+            int index = 0;
+            mediumsTable.getColumns().clear();
+            for (String column : newValue.getColumns()) {
+                TableColumn<MediumViewModel, String> tableColumn = new TableColumn<>(column);
+                tableColumn.setCellValueFactory(new MediumTableCellValueFactory(index++));
+                mediumsTable.getColumns().add(tableColumn);
+            }
 
-        int index = 0;
-        mediumsTable.getColumns().clear();
-        for (String column : newValue.getColumns()) {
-            TableColumn<MediumViewModel, String> tableColumn = new TableColumn<>(column);
-            tableColumn.setCellValueFactory(new MediumTableCellValueFactory(index++));
-            mediumsTable.getColumns().add(tableColumn);
+            ContextMenu cm = createTableContextMenu();
+            mediumsTable.setContextMenu(cm);
+        } catch (MediaNotAvailableException e) {
+            createExceptionAlert(e);
         }
-
-        ContextMenu cm = createTableContextMenu();
-        mediumsTable.setContextMenu(cm);
     }
 
     private ContextMenu createTableContextMenu() {
@@ -161,7 +206,11 @@ public class MainWindowController {
 
         if (chosenButton.isPresent() && chosenButton.get().equals(ButtonType.OK)) {
             MediumDTO medium = selectedItem.getOriginal();
-            mediumManager.removeMedium(medium);
+            try {
+                mediumManager.removeMedium(medium);
+            } catch (MediumNotRemovedException e) {
+                createExceptionAlert(e);
+            }
             dataUpdated();
             selectCategory(medium.getCategory());
         }
@@ -185,8 +234,12 @@ public class MainWindowController {
         if (mediumOptional.isPresent()) {
             MediumDTO newMedium = mediumOptional.get();
 
-            mediumManager.removeMedium(original);
-            mediumManager.addMedium(newMedium);
+            try {
+                mediumManager.removeMedium(original);
+                mediumManager.addMedium(newMedium);
+            } catch (MediumNotRemovedException | MediumNotPersistedException e) {
+                createExceptionAlert(e);
+            }
 
             dataUpdated();
             selectCategory(newMedium.getCategory());
@@ -211,20 +264,29 @@ public class MainWindowController {
         fileChooser.setTitle("Open ODS file");
         File result = fileChooser.showOpenDialog(new Stage());
         if (result != null) {
-            setDocumentProvider(new ODSDocumentProvider(result.getAbsolutePath()));
-            setMediumManager(new MediumManagerImpl(documentProvider));
-            setCategoryManager(new CategoryManagerImpl(documentProvider));
-            dataUpdated();
+            try {
+                setDocumentProvider(new ODSDocumentProvider(result.getAbsolutePath()));
+                setMediumManager(new MediumManagerImpl(documentProvider));
+                setCategoryManager(new CategoryManagerImpl(documentProvider));
+                dataUpdated();
+            } catch (DocumentNotValidException e) {
+                createExceptionAlert(e);
+            }
         }
     }
 
     public void saveMenuItemAction() {
         if (documentProvider != null) {
-            documentProvider.save();
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Save");
-            alert.setHeaderText("Document saved.");
-            alert.showAndWait();
+            try {
+                documentProvider.save();
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Save");
+                alert.setHeaderText("Document saved.");
+                alert.showAndWait();
+
+            } catch (DocumentNotSavedException e) {
+                createExceptionAlert(e);
+            }
         }
     }
 
@@ -267,9 +329,14 @@ public class MainWindowController {
 
         if (categoryOptional.isPresent()) {
             CategoryDTO newCategory = categoryOptional.get();
-            categoryManager.addCategory(newCategory);
-            dataUpdated();
-            selectCategory(categoryManager.getCategories().iterator().next());
+            try {
+                categoryManager.addCategory(newCategory);
+                dataUpdated();
+                selectCategory(categoryManager.getCategories().iterator().next());
+
+            } catch (CategoryNotPersistedException | CategoriesNotAvailableException e) {
+                createExceptionAlert(e);
+            }
         }
     }
 
@@ -280,7 +347,11 @@ public class MainWindowController {
 
         if (mediumOptional.isPresent()) {
             MediumDTO newMedium = mediumOptional.get();
-            mediumManager.addMedium(newMedium);
+            try {
+                mediumManager.addMedium(newMedium);
+            } catch (MediumNotPersistedException e) {
+                createExceptionAlert(e);
+            }
             dataUpdated();
             selectCategory(newMedium.getCategory());
         }
@@ -294,17 +365,22 @@ public class MainWindowController {
             return;
         }
 
-        Collection<MediumDTO> mediums = mediumManager.findMediumByValue(query);
-        MediumSearchResultsPane searchResultsPane = new MediumSearchResultsPane(mediums);
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Search results");
-        alert.setHeaderText(String.format("%d results found.", mediums.size()));
-        alert.getDialogPane().setContent(searchResultsPane.getNode());
-        alert.getDialogPane().setMinWidth(500.0);
-        alert.getDialogPane().setMinHeight(150.0);
-        alert.setWidth(500.0);
-        alert.setHeight(150.0);
-        alert.showAndWait();
+        try {
+            Collection<MediumDTO> mediums = mediumManager.findMediumByValue(query);
+            MediumSearchResultsPane searchResultsPane = new MediumSearchResultsPane(mediums);
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Search results");
+            alert.setHeaderText(String.format("%d results found.", mediums.size()));
+            alert.getDialogPane().setContent(searchResultsPane.getNode());
+            alert.getDialogPane().setMinWidth(500.0);
+            alert.getDialogPane().setMinHeight(150.0);
+            alert.setWidth(500.0);
+            alert.setHeight(150.0);
+            alert.showAndWait();
+        } catch (MediaNotAvailableException e) {
+            createExceptionAlert(e);
+        }
+
     }
 
 }

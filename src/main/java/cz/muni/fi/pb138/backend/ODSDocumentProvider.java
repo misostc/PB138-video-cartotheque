@@ -1,6 +1,5 @@
 package cz.muni.fi.pb138.backend;
 
-import cz.muni.fi.pb138.exceptions.DocumentNotAvailableException;
 import cz.muni.fi.pb138.exceptions.DocumentNotSavedException;
 import cz.muni.fi.pb138.exceptions.DocumentNotValidException;
 import org.w3c.dom.Document;
@@ -39,7 +38,7 @@ public class ODSDocumentProvider implements DocumentProvider {
      * @param filename ods file to locate.
      * @throws DocumentNotValidException when document is not a proper file.
      */
-    public ODSDocumentProvider(String filename) {
+    public ODSDocumentProvider(String filename) throws DocumentNotValidException {
         // parse the file and save Document instance
         this.filename = filename;
         try {
@@ -51,29 +50,24 @@ public class ODSDocumentProvider implements DocumentProvider {
             DocumentBuilder builder = factory.newDocumentBuilder();
             document = builder.parse(inputStream);
             zipFile.close();
+            performInitalCleanup();
         } catch (Exception e) {
-            throw new DocumentNotAvailableException(e);
+            throw new DocumentNotValidException(e);
         }
 
-        performInitalCleanup();
     }
 
-    private void performInitalCleanup() {
+    private void performInitalCleanup() throws XPathExpressionException {
         removeAllEmptyTableRows();
     }
 
-    private void removeAllEmptyTableRows() {
-        try {
-            NodeList nodeList = ODSXpathUtils.evaluateXpathNodeList(this, "//table:table-row[not(.//text:p)]");
+    private void removeAllEmptyTableRows() throws XPathExpressionException {
+        NodeList nodeList = ODSXpathUtils.evaluateXpathNodeList(this, "//table:table-row[not(.//text:p)]");
 
-            for (int i = 0; i < nodeList.getLength(); i++) {
-                Node row = nodeList.item(i);
-                row.getParentNode().removeChild(row);
-            }
-        } catch (XPathExpressionException e) {
-            throw new DocumentNotAvailableException(e);
+        for (int i = 0; i < nodeList.getLength(); i++) {
+            Node row = nodeList.item(i);
+            row.getParentNode().removeChild(row);
         }
-
     }
 
     @Override
@@ -82,7 +76,7 @@ public class ODSDocumentProvider implements DocumentProvider {
     }
 
     @Override
-    public void save() {
+    public void save() throws DocumentNotSavedException {
         //take the document instance and save it to ods file
 
         try {
@@ -108,7 +102,7 @@ public class ODSDocumentProvider implements DocumentProvider {
 
     }
 
-    private void restoreTempFile() {
+    private void restoreTempFile() throws DocumentNotSavedException {
         boolean deleted = new File(this.filename).delete();
         boolean renamed = deleted && new File(this.filename + ".tmp").renameTo(new File(this.filename));
         if (!renamed) {

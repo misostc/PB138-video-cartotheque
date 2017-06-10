@@ -1,6 +1,6 @@
 package cz.muni.fi.pb138.exceptions;
 
-public class CategoryNotRemovedException extends RuntimeException {
+public class CategoryNotRemovedException extends Exception {
     public CategoryNotRemovedException() {
     }
 

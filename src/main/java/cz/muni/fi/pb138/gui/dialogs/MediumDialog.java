@@ -17,7 +17,6 @@ import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -83,11 +82,9 @@ public class MediumDialog extends Dialog<MediumDTO> {
         mediumDTO = new MediumDTO();
         mediumDTO.setCategory(selectedCategory);
         mediumDTO.setValues(constructValues(selectedCategory));
-        if (mediumDTO.isValid())
-        {
+        if (mediumDTO.isValid()) {
             return mediumDTO;
-        }
-        else {
+        } else {
             return null;
         }
     }
