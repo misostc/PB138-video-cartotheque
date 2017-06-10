@@ -44,6 +44,7 @@ public class ODSDocumentProvider implements DocumentProvider {
             ZipEntry entry = zipFile.getEntry(CONTENT_XML_FILENAME);
             InputStream inputStream = zipFile.getInputStream(entry);
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            factory.setNamespaceAware(true);
             DocumentBuilder builder = factory.newDocumentBuilder();
             document = builder.parse(inputStream);
             zipFile.close();

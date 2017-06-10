@@ -96,7 +96,6 @@ public class CategoryDialog extends Dialog<CategoryDTO> {
 
         categoryDTO = new CategoryDTO();
         //todo generate unique ID
-        categoryDTO.setId(Integer.toString(categoryManager.getCategories().size() + 1));
         categoryDTO.setName(categoryNameField.getText());
         List<String> columnList = new ArrayList<String>(categoryListView.getItems());
         categoryDTO.setColumns(columnList);

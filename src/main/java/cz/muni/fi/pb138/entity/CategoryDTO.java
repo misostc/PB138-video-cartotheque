@@ -3,15 +3,15 @@ package cz.muni.fi.pb138.entity;
 import java.util.List;
 
 public class CategoryDTO {
-    String id;
+    Integer id;
     String name;
     List<String> columns;
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -32,11 +32,7 @@ public class CategoryDTO {
     }
 
     public String toString() {
-        String output = id + " " + name + " columns:";
-        for (String item : columns) {
-            output = output + " " + item;
-        }
-        return output;
+        return getName();
     }
 
     public boolean isValid() {

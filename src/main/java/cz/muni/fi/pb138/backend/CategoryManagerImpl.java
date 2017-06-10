@@ -128,7 +128,9 @@ public class CategoryManagerImpl implements CategoryManager {
         for (int i = 0; i < nodeList.getLength(); i++) {
 
             Node item = nodeList.item(i);
-            result.add(convertNodeToCategory(item));
+            CategoryDTO category = convertNodeToCategory(item);
+            category.setId(i);
+            result.add(category);
         }
 
         return result;
@@ -136,8 +138,6 @@ public class CategoryManagerImpl implements CategoryManager {
 
     private CategoryDTO convertNodeToCategory(Node item) {
         CategoryDTO categoryDTO = new CategoryDTO();
-
-        categoryDTO.setId(String.valueOf(item.hashCode()));
         categoryDTO.setName(getCategoryNameFromIndex(item));
         categoryDTO.setColumns(getColumnsFromNode(item));
 
@@ -158,9 +158,8 @@ public class CategoryManagerImpl implements CategoryManager {
         }
 
         for (int i = 0; i < cells.getLength(); i++) {
-            if (cells.item(i).hasChildNodes()) {
-                result.add(cells.item(i).getFirstChild().getTextContent());
-            }
+            String textContent = cells.item(i).getTextContent();
+            result.add(textContent == null ? "<no-text>" : textContent);
         }
 
         return result;

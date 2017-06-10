@@ -1,18 +1,20 @@
 package cz.muni.fi.pb138.entity;
 
-import org.w3c.dom.Node;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class MediumDTO {
     CategoryDTO category;
     List<String> values = new ArrayList<>();
-    int id;
+    Integer id;
 
-    public int getId() { return id; }
+    public Integer getId() {
+        return id;
+    }
 
-    public void setId(int id) { this.id=id; }
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public CategoryDTO getCategory() {
         return category;

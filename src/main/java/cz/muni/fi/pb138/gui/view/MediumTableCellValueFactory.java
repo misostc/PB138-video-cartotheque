@@ -6,6 +6,8 @@ import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TableColumn;
 import javafx.util.Callback;
 
+import java.util.List;
+
 /**
  * Created by Michal.Babel on 01-Jun-17.
  */
@@ -19,6 +21,8 @@ public class MediumTableCellValueFactory implements Callback<TableColumn.CellDat
 
     @Override
     public ObservableValue<String> call(TableColumn.CellDataFeatures<MediumViewModel, String> mediumViewModelStringCellDataFeatures) {
-        return new SimpleStringProperty(mediumViewModelStringCellDataFeatures.getValue().getValues().get(index));
+        List<String> values = mediumViewModelStringCellDataFeatures.getValue().getValues();
+        String value = index < values.size() ? values.get(index) : "";
+        return new SimpleStringProperty(value);
     }
 }

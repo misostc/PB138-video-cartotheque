@@ -147,7 +147,10 @@ public class MainWindowController {
 
         if (mediumOptional.isPresent()) {
             MediumDTO newMedium = mediumOptional.get();
-            mediumManager.editMedium(newMedium);
+
+            mediumManager.removeMedium(original);
+            mediumManager.addMedium(newMedium);
+
             dataUpdated();
         }
     }

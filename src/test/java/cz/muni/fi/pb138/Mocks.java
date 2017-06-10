@@ -16,7 +16,7 @@ public class Mocks {
 
     public static CategoryDTO getCategory() {
         CategoryDTO result = mock(CategoryDTO.class);
-        when(result.getId()).thenReturn("0");
+        when(result.getId()).thenReturn(0);
         when(result.getName()).thenReturn("Category" + result.hashCode());
         List<String> list = Arrays.asList("Column1", "Column2", "Column3");
         when(result.getColumns()).thenReturn(list);

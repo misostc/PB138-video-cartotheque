@@ -19,26 +19,6 @@ public interface MediumManager {
      */
     void addMedium(MediumDTO m);
 
-
-    /**
-     * Moves a medium specified by a category name and medium ID to a different category.
-     * @param m medium to be moved
-     * @param newCategory new category to be assigned to the medium
-     */
-    void moveMedium(MediumDTO m, CategoryDTO newCategory);
-
-    /**
-     * Edits a medium
-     * The medium object must have all fields filled in.
-     * Do NOT use to change the category - use moveMedium instead
-     *
-     * @param m medium to be edited
-     * @throws IllegalArgumentException          when some fields are missing
-     * @throws ColumnsDontMatchCategoryException when the values inside medium don't adhere to columns specified in the category
-     * @throws MediumNotPersistedException       when there was a problem persisting the medium.
-     */
-    void editMedium(MediumDTO m);
-
     /**
      * Removes a medium.
      * Searches for medium according to the id field and category name and removes it.
