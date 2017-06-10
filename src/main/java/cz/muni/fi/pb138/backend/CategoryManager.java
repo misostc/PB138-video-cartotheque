@@ -16,7 +16,6 @@ public interface CategoryManager {
      * The id for category is created automatically.
      *
      * @param c category object to add
-     * @throws IllegalArgumentException      when a field is missing, or the id field is filled in
      * @throws CategoryNotPersistedException when there was a problem with persisting a category
      */
     void addCategory(CategoryDTO c);
@@ -28,8 +27,6 @@ public interface CategoryManager {
      * This method also removes all media associated with this category.
      *
      * @param c category object with id field filled in
-     * @throws IllegalArgumentException    when id field is missing
-     * @throws CategoryNotFoundException   when there is no category with this id
      * @throws CategoryNotRemovedException when there was a problem with removing a category
      */
     void removeCategory(CategoryDTO c);

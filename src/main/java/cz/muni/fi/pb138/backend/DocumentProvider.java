@@ -11,7 +11,6 @@ public interface DocumentProvider {
      * internal node, so that the manipulations from outside will reflect
      * inside the document.
      *
-     * @throws DocumentNotAvailableException when there was a problem retrieving Document (i.e. IO error)
      */
     Document getDocument();
 

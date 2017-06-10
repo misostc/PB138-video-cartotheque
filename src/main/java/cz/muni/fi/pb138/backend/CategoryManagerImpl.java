@@ -151,7 +151,6 @@ public class CategoryManagerImpl implements CategoryManager {
 
         NodeList itemChildren = item.getChildNodes();
         for (int i = 0; i < itemChildren.getLength(); i++) {
-            //if(itemChildren.item(i).getNodeName() == "table:table-row"){
             if (itemChildren.item(i).getNodeName().equals("table:table-row")) {
                 cells = itemChildren.item(i).getChildNodes();
                 break;
