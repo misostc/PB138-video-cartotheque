@@ -170,7 +170,7 @@ public class MediumManagerImpl implements MediumManager {
         for (int i=0;i<nodeList.getLength();i++) {
             MediumDTO mediumDTO = new MediumDTO();
             //fill medium properties
-            for (int j=1;j<nodeList.getLength();j++) {
+            for (int j=1;j<nodeList.item(i).getChildNodes().getLength();j++) {
                 mediumDTO.getValues().add(getCellText(nodeList.item(i).getChildNodes().item(j)));
             }
 
@@ -215,10 +215,10 @@ public class MediumManagerImpl implements MediumManager {
 
     private class MapVariableResolver implements XPathVariableResolver {
         // local store of variable name -> variable value mappings
-        Map<String, String> variableMappings = new HashMap<String, String>();
+        Map<String, String> variableMappings = new HashMap<>();
 
         // a way of setting new variable mappings
-        public void setVariable(String key, String value)  {
+        void setVariable(String key, String value)  {
             variableMappings.put(key, value);
         }
 
