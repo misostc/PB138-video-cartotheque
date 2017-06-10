@@ -35,7 +35,7 @@ public class CategoryDialog extends Dialog<CategoryDTO> {
         this.categoryManager = categoryManager;
         this.categoryDTO = categoryDTO;
 
-        String fxmlFile = "/fxml/editCategory.fxml";
+        String fxmlFile = "/fxml/category.fxml";
         FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
         loader.setController(this);
 
