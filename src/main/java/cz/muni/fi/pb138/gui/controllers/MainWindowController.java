@@ -380,7 +380,7 @@ public class MainWindowController {
 
         String result;
         InputStream aboutTextStream = getClass().getResourceAsStream("/text/about.txt");
-        try (BufferedReader buffer = new BufferedReader(new InputStreamReader(aboutTextStream))) {
+        try (BufferedReader buffer = new BufferedReader(new InputStreamReader(aboutTextStream, "UTF-8"))) {
             result = buffer.lines().collect(Collectors.joining("\n"));
         } catch (IOException e) {
             result = "https://github.com/misostc/PB138-video-cartotheque";
