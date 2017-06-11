@@ -6,7 +6,7 @@
 
     <groupId>cz.muni.fi</groupId>
     <artifactId>PB138-video-cartotheque</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <build>
         <plugins>
             <plugin>
