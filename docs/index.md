@@ -28,4 +28,6 @@ To get built binaries, go to [releases](https://github.com/misostc/PB138-video-c
 
 # UML diagrams
 
-![Use Case](images/Cartotheque-UseCase.png)
+![Use Case](images/Cartotheque-UseCase.png)Basic class diagram:
+
+![Class Diagram](images/class-diagram.png)
