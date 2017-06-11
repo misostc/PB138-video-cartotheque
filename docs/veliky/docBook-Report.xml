@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://docbook.org/xml/5.0/rng/docbook.rng" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<?xml-model href="http://docbook.org/xml/5.0/rng/docbook.rng" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<article xmlns="http://docbook.org/ns/docbook" version="5.0">
+
+    <info>
+        <title>PB138 - Záverečná správa</title>
+        <subtitle>Desktopová aplikace pro správu domácí videotéky v Javě</subtitle>
+        <author>
+            <personname>Dávid Veliký</personname>
+            <email>409965@mail.muni.cz</email>
+        </author>
+    </info>
+
+    <sect1>
+        <title>Úvod</title>
+        <para>
+            Mojou úlohou bolo na začiatku vytvoriť xml schému pre nami zvolenú štruktúru dokumentu. Na základe pripomienok sme však mali pracovať priamo so štruktúrou dát ukážkového súboru. Tým sa moja úloha zmenila a mal som na starosti časť BE.
+        </para>
+    </sect1>
+
+    <sect1>
+        <title>Moja participácia</title>
+        <sect2>
+            <title>Back-End</title>
+            <para>
+                V prvej fáze bola práca so vstupným súborom. Bolo treba zistiť, ako je súbor vnútorne reprezentovaný. Zistilo sa, že ide v podstate o zip. Tu bolo potrebné identifikovať, ktoré súbory nachádzajúce sa v tomto balíku sú pre nás potrebné - v zmysle, že ich bude treba upravovať. Išlo o jeden súbor "content.xml", ktorý bolo potrebné načítať a následne uložiť zmeny v ňom.
+            </para>
+            <para>
+                Druhá fáza riešila základnú prácu s kategóriami, ako pridať a odobrať kategóriu, ale taktiež aj získať kategórie.
+            </para>
+        </sect2>
+    </sect1>
+
+</article>
