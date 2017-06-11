@@ -180,7 +180,7 @@ public class MediumManagerImpl implements MediumManager {
 
             Node table = findTableParent(item);
             if (table != null) {
-                mediumDTO.setCategory(CategoryManagerImpl.convertNodeToCategory(table));
+                mediumDTO.setCategory(NodeUtils.convertNodeToCategory(table));
             }
 
             collection.add(mediumDTO);
