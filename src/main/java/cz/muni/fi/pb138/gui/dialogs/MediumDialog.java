@@ -35,11 +35,18 @@ public class MediumDialog extends Dialog<MediumDTO> {
     private final CategoryManager categoryManager;
     private MediumDTO mediumDTO;
     private final String[] values = new String[100];
+    private CategoryDTO preselectedCategory;
+
 
     public MediumDialog(CategoryManager categoryManager, MediumDTO mediumDTO) {
+        this(categoryManager, mediumDTO, null);
+    }
+
+    public MediumDialog(CategoryManager categoryManager, MediumDTO mediumDTO, CategoryDTO preselectedCategory) {
         super();
         this.categoryManager = categoryManager;
         this.mediumDTO = mediumDTO;
+        this.preselectedCategory = preselectedCategory;
 
         String fxmlFile = "/fxml/medium.fxml";
         FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
@@ -102,8 +109,14 @@ public class MediumDialog extends Dialog<MediumDTO> {
     @FXML
     private void initialize() {
         getValues(mediumDTO);
-        updateCategoryComboBox(mediumDTO.getCategory());
-        updateValuesGrid(mediumDTO.getCategory());
+        if (preselectedCategory != null) {
+            updateCategoryComboBox(preselectedCategory);
+            updateCategoryComboBox(preselectedCategory);
+        } else {
+            updateCategoryComboBox(mediumDTO.getCategory());
+            updateValuesGrid(mediumDTO.getCategory());
+        }
+
     }
 
     private void getValues(MediumDTO mediumDTO) {
@@ -170,5 +183,4 @@ public class MediumDialog extends Dialog<MediumDTO> {
         }
 
     }
-
 }

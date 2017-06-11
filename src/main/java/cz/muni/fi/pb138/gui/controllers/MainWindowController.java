@@ -16,6 +16,10 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DataFormat;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -81,7 +85,55 @@ public class MainWindowController {
     private void updateCategoriesList() {
         try {
             ObservableList<CategoryDTO> categoryDTOS = FXCollections.observableArrayList(categoryManager.getCategories());
-            categoriesList.setCellFactory(new CategoryListCellFactory());
+            categoriesList.setCellFactory(new CategoryListCellFactory() {
+                @Override
+                public ListCell<CategoryDTO> call(ListView<CategoryDTO> categoryDTOListView) {
+                    final ListCell<CategoryDTO> cell = super.call(categoryDTOListView);
+                    cell.setOnDragOver(ev -> {
+                        if (cell.getItem() != null && ev.getDragboard().hasString()) {
+                            ev.acceptTransferModes(TransferMode.MOVE);
+                        }
+                        ev.consume();
+                    });
+
+                    cell.setOnDragDropped(ev -> {
+                        Dragboard db = ev.getDragboard();
+                        boolean success = false;
+                        if (db.hasString()) {
+                            String id = db.getString();
+                            if (draggedMedium != null && id.equals(String.valueOf(draggedMedium.getId()))) {
+                                CategoryDTO categoryDTO = cell.getItem();
+                                MediumDTO movedMedium = draggedMedium;
+
+                                MediumDialog dialog = new MediumDialog(categoryManager, movedMedium, categoryDTO);
+                                dialog.setTitle("Move Medium");
+                                dialog.setHeaderText("You are moving medium to a new category. Accept these changes?");
+
+                                Optional<MediumDTO> mediumOptional = dialog.showAndWait();
+
+                                if (mediumOptional.isPresent()) {
+                                    MediumDTO newMedium = mediumOptional.get();
+
+                                    try {
+                                        mediumManager.removeMedium(movedMedium);
+                                        mediumManager.addMedium(newMedium);
+                                    } catch (MediumNotRemovedException | MediumNotPersistedException e) {
+                                        createExceptionAlert(e);
+                                    }
+
+                                    dataUpdated();
+                                    selectCategory(newMedium.getCategory());
+                                }
+                                success = true;
+                            }
+                        }
+                        ev.setDropCompleted(success);
+                        ev.consume();
+                    });
+
+                    return cell;
+                }
+            });
             categoriesList.getItems().clear();
             categoriesList.setItems(categoryDTOS);
             categoriesList.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> updateMediumList(newValue));
@@ -155,6 +207,8 @@ public class MainWindowController {
         }
     }
 
+    private static MediumDTO draggedMedium;
+
     private void updateMediumList(CategoryDTO newValue) {
         if (newValue == null) {
             mediumsTable.getItems().clear();
@@ -176,6 +230,22 @@ public class MainWindowController {
 
             ContextMenu cm = createTableContextMenu();
             mediumsTable.setContextMenu(cm);
+
+            mediumsTable.setRowFactory((TableView<MediumViewModel> cb) -> {
+                TableRow<MediumViewModel> row = new TableRow<>();
+                row.setOnDragDetected(ev -> {
+                    Dragboard db = row.startDragAndDrop(TransferMode.MOVE);
+
+                    ClipboardContent content = new ClipboardContent();
+                    MediumDTO original = row.getItem().getOriginal();
+                    content.putString(String.valueOf(original.getId()));
+                    db.setContent(content);
+                    draggedMedium = original;
+                    ev.consume();
+                });
+                return row;
+            });
+
         } catch (MediaNotAvailableException e) {
             createExceptionAlert(e);
         }
