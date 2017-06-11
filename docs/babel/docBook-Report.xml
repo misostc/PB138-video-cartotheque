@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://docbook.org/xml/5.0/rng/docbook.rng" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<?xml-model href="http://docbook.org/xml/5.0/rng/docbook.rng" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<article xmlns="http://docbook.org/ns/docbook"
+         version="5.0">
+    <info>
+        <title>PB138 - Záverečná správa</title>
+        <subtitle>Desktopová aplikace pro správu domácí videotéky v Javě</subtitle>
+        <author>
+            <personname>Michal Bábel</personname>
+            <email>410434@mail.muni.cz</email>
+        </author>
+    </info>
+
+    <sect1>
+        <title>Úvod</title>
+        <para>
+            Ako vedúci projektu som mal veľa povinností a vo výsledku som sa zapojil do každej časti
+            prípravy a tvorby projektu. Inicializoval som úvodné stretnutia, aktívne som komunikoval s
+            týmom a výrazne som sa podieľal na architektúre projektu.
+        </para>
+        <para>
+            Nakoľko mám lepšie znalosti ohľadom vývoja softvéru v Jave a mám prax v tejto oblasti,
+            okrem vykonávania svojich úloh som aj aktívne pomáhal ostatným členom týmu. Odpovedal
+            som na ich otázky, kontroloval ich kód a fixoval chyby, ktoré pri vývoji nastali.
+        </para>
+    </sect1>
+
+    <sect1>
+        <title>Môj prínos</title>
+        <sect2>
+            <title>Organizácia projektu</title>
+            <para>
+                Projekt sme začali tvoriť po tom, ako sme sa v ISe prihlásili do skupiny. Začal som
+                e-mailovú konverzáciu, kde sme si vymenili kontakty na sociálnu sieť. Tá slúžila ako
+                náš primárny komunikačný kanál, keďže bolo obtiažnejšie sa stretnúť osobne,
+                pretože sme mali odlišné rozvrhy počas skúškového obdobia.
+            </para>
+            <para>
+                Pri implementácií projektu som sa snažil presadiť používanie GitHub issues, project a
+                wiki funkcionality. Hlavne pri konečnej fázy som testoval ručne aplikáciu a zistené
+                defekty som zapisoval ako issue. Toto isté som požadoval aj od zvyšku týmu.
+            </para>
+        </sect2>
+        <sect2>
+            <title>Architektúra projektu</title>
+            <para>
+                Výrazne som pomohol pri načrtnutí a ďalšej úprave architektúry aplikácie. Následne
+                som jednotlivé časti po vzájomnej dohode prerozdelil medzi tým. Navrhli sme na začiatku
+                úvodnú štruktúru back-end súčasti, následne sme ju revidovali po prijatí pripomienok
+                z kontrolných bodov.
+            </para>
+            <para>
+                Pri návrhu som sa tiež podielal na tvorbe prvotných obrázkov prototypu aplikácie,
+                konkrétne som navrhol hlavnú obrazovku aplikácie.
+            </para>
+            <para>
+                Vo fáze implementácie som zvolil používaný postup a knižnice pre tvorbu GUI. Zvolil
+                som JavaFX, nakoľko je koncipované ako inovovaný a jednoduchší nástupca Swingu. S
+                touto knižnicou som pracoval po prvý krát, no práca s ňou bola jednoduchá a vo
+                výsledku myslím, že nám pomohla úspešne dokončiť projekt.
+            </para>
+        </sect2>
+        <sect2>
+            <title>Implementácia programových súčastí</title>
+            <sect3>
+                <title>GUI</title>
+                <para>
+                    Ako prvú komponentu som začal implementovať GUI. Pre simuláciu back-endu som použil
+                    mockovaciu knižnicu Mockito, ktorá mi jednoducho umožnila zobraziť ukážkové hodnoty
+                    v rozhraní. Back-endové komponenty následne riešili ostatní členovia tímu.
+                </para>
+                <para>
+                    Vo výsledku som implementoval hlavnú obrazovku aplikácie, dialógové okno pre tvorbu
+                    média, dialógové okno pre výsledky vyhľadávania a všetky položky v hornom menu
+                    aplikácie.
+                </para>
+            </sect3>
+            <sect3>
+                <title>Back-end</title>
+                <para>
+                    Popri implementácií som radil kolegom z týmu a ako oni vyvíjali svoje súčasti tak
+                    som ich postupne integroval s GUI a odľaďoval prípadné bugy.
+                </para>
+                <para>
+                    Tiež som v projekte robil rozsiahlejší refactoring väčšiny súčastí, aby bol
+                    výsledný kód čitateľnejší a menej náchylný na chyby.
+                </para>
+            </sect3>
+        </sect2>
+    </sect1>
+</article>
