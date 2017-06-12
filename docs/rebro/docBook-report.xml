@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://docbook.org/xml/5.0/rng/docbook.rng" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<?xml-model href="http://docbook.org/xml/5.0/rng/docbook.rng" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<article xmlns="http://docbook.org/ns/docbook"
+         version="5.0">
+    <info>
+        <title>PB138 - Záverečná správa</title>
+        <author>
+            <personname>Marcel Rebro</personname>
+            <email>433819@mail.muni.cz</email>
+        </author>
+    </info>
+
+    <sect1>
+        <title>Úvod</title>
+        <para>
+            Mojou úlohou v tomto projekte bola spolupráca na návrhu projektu a implementovanie back-end funkcionality, konkrétne MediumManagera.
+        </para>
+    </sect1>
+
+    <sect1>
+        <title>Moja práca</title>
+        <sect2>
+            <title>Návrh projektu</title>
+            <para>
+                Vo fáze návrhu projektu som pomáhal Michalovi s prípravou rozhraní. Vzhľadom na jeho rozsiahlejšsie skúsenosti s vývojom v Jave som mu pomáhal najmä s hľadaním chýb a nezrovnalostí v návrhu architektúry systému.
+            </para>
+        </sect2>
+        <sect2>
+            <title>Back-end</title>
+            <para>
+                V rámci back-endu našej aplikácie som implementoval MediaManager, tj. nástroj, ktorý umožňuje prácu s jednotlivými médiami - ich pridávanie, odoberanie, vyhľadávanie, úpravu a presúvanie medzi kategóriami.
+            </para>
+            <para>
+                Tiež som sa minimálne venoval záverečnému dolaďovaniu aplikácie - riešeniu posledných drobností a úpravy gramariky a štylizácie dialógov.
+            </para>
+        </sect2>
+    </sect1>
+</article>
